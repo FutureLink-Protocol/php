@@ -1,18 +1,7 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: PageLookup.php 47984 2013-10-11 17:36:21Z robertplummer $
+namespace FutureLink;
 
-// File name: PageLookup.php
-// Required path: /lib/core/Feed/FutureLink
-//
-// Programmer: Robert Plummer
-//
-// Purpose: Generates URI to reach destination for passed FutureLink and redirects browser to that URI.
-
-class FutureLink_PageLookup extends Feed_Abstract
+class PageLookup extends Feed_Abstract
 {
 	var $type = 'futurelink';
 	var $futureLink = array();

@@ -1,11 +1,12 @@
 <?php
+namespace FutureLink;
 
-class FutureLink_Pairs
+class Pairs
 {
     public $entry = array();
     public $length = 0;
 
-    public function add(FutureLink_Pair $metadata)
+    public function add(Pair $metadata)
     {
         $this->entry[] = $metadata;
         $this->length++;

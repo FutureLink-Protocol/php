@@ -1,19 +1,11 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: FutureUI.php 47984 2013-10-11 17:36:21Z robertplummer $
-
-// File name: FutureUI.php
-// Required path: /lib/core/Feed
-//
+namespace FutureLink;
 // Programmer: Robert Plummer
 //
 // Purpose: Inject FutureLink UI components into Wiki editing screens.  Managed page's saved attributes per
 //          FutureLink UI interaction.  Generates and presents FutureLink text string to user.
 
-Class FutureLink_FutureUI extends Feed_Abstract
+Class FutureUI extends Feed
 {
 	var $type = 'futurelink';
 	var $version = 0.1;
@@ -29,7 +21,7 @@ Class FutureLink_FutureUI extends Feed_Abstract
 	function __construct($page)
 	{
 		$this->page = $page;
-		$this->metadata = FutureLink_MetadataAssembler::pageFutureLink($page);
+		$this->metadata = MetadataAssembler::pageFutureLink($page);
 		return parent::__construct($page);
 	}
 
@@ -654,10 +646,10 @@ JQ
 
 			$this->verifications[$i]["metadataHere"] = $this->metadata->raw;
 
-			$this->verifications[$i]["phraseThere"] =JisonParser_Phraser_Handler::superSanitize($newEntry->futurelink->text);
+			$this->verifications[$i]["phraseThere"] = Phraser\Handler::superSanitize($newEntry->futurelink->text);
 			$this->verifications[$i]["hashHere"] = hash_hmac("md5", $this->verifications[$i]["hashBy"], $this->verifications[$i]["phraseThere"]);
 			$this->verifications[$i]["hashThere"] = $newEntry->futurelink->hash;
-			$this->verifications[$i]['exists'] = JisonParser_Phraser_Handler::hasPhrase(
+			$this->verifications[$i]['exists'] = Phraser_Handler::hasPhrase(
 				$revision['data'],
 				$this->verifications[$i]["phraseThere"]
 			);
@@ -683,7 +675,7 @@ JQ
 			}
 
 			foreach ($newEntry->futurelink as $key => $value) {
-				if (isset(FutureLink_MetadataAssembler::$acceptableKeys[$key]) && FutureLink_MetadataAssembler::$acceptableKeys[$key] == true) {
+				if (isset(MetadataAssembler::$acceptableKeys[$key]) && MetadataAssembler::$acceptableKeys[$key] == true) {
 					//all clear
 				} else {
 					$this->verifications[$i]['reason'][] = 'metadata_tampering' . ($this->debug == true ? $key : '');
@@ -692,7 +684,7 @@ JQ
 			}
 
 			foreach ($newEntry->pastlink as $key => $value) {
-				if (isset(FutureLink_MetadataAssembler::$acceptableKeys[$key]) && FutureLink_MetadataAssembler::$acceptableKeys[$key] == true) {
+				if (isset(MetadataAssembler::$acceptableKeys[$key]) && MetadataAssembler::$acceptableKeys[$key] == true) {
 					//all clear
 				} else {
 					$this->verifications[$i]['reason'][] = 'metadata_tampering' . ($this->debug == true ? $key : '');

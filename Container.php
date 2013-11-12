@@ -1,6 +1,8 @@
 <?php
 
-class Feed_Container
+namespace FutureLink;
+
+class Container
 {
     public $version;
 	public $encoding;

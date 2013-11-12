@@ -1,6 +1,8 @@
 <?php
 
-class Feed_Contents
+namespace FutureLink;
+
+class Contents
 {
     public $date = 0;
     public $type;

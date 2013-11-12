@@ -1,18 +1,10 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: SendToFuture.php 47984 2013-10-11 17:36:21Z robertplummer $
+namespace FutureLink;
 
-// File name: Send.php
-// Required path: /lib/core/FutureLink
-//
-// Programmer: Robert Plummer
-//
+use Exception;
 // Purpose: Send a pastlink to a futurelink
 
-Class FutureLink_SendToFuture extends Feed_Abstract
+class SendToFuture extends Feed
 {
 	var $type = 'futurelink';
 	var $version = 0.1;
@@ -28,7 +20,7 @@ Class FutureLink_SendToFuture extends Feed_Abstract
 	{
 		$me = new self("global");
 		$sent = array();
-		$pastlink = new FutureLink_PastUI();
+		$pastlink = new PastUI();
 		$feed = $pastlink->feed();
 
 		$items = array();

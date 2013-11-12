@@ -1,5 +1,7 @@
 <?php
-class FutureLink_Pair
+namespace FutureLink;
+
+class Pair
 {
     public $futurelink;
     public $pastlink;

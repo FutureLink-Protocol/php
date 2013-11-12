@@ -1,18 +1,7 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: MetadataAssembler.php 47984 2013-10-11 17:36:21Z robertplummer $
+namespace FutureLink;
 
-// File name: Metadata.php
-// Required path: /lib/core/FutureLink
-//
-// Programmer: Robert Plummer
-//
-// Purpose: Generates list of pages which have FutureLink connections to a given page.
-
-class FutureLink_MetadataAssembler
+class MetadataAssembler
 {
 	public $page;
 	public $lang;
@@ -103,9 +92,9 @@ class FutureLink_MetadataAssembler
 
 	static function pagePastLink($page, $data)
 	{
-		$me = new FutureLink_MetadataAssembler($page);
+		$me = new MetadataAssembler($page);
 
-        $me->raw = new FutureLink_Metadata();
+        $me->raw = new Metadata();
 		$me->raw->websiteTitle =            $me->websiteTitle;
         $me->raw->websiteSubtitle =         $me->page;
 		$me->raw->moderator =               $me->moderatorName();

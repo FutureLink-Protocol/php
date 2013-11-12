@@ -1,5 +1,7 @@
 <?php
-class FutureLink_Metadata
+namespace FutureLink;
+
+class Metadata
 {
     public $websiteTitle;
     public $websiteSubtitle;

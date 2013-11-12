@@ -1,6 +1,5 @@
-/* description: Parses words out of html, ignouring html in the parse, but returning it in the end */
-//phpOption parserClass:JisonParser_Phraser
-//phpOption lexerClass:JisonParser_Phraser_Lexer
+/* description: Parses words out of html, ignoring html in the parse, but returning it in the end */
+//option
 
 /* lexical grammar */
 %lex

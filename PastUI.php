@@ -1,18 +1,10 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: PastUI.php 47984 2013-10-11 17:36:21Z robertplummer $
-
-// File name: PastUI.php
-// Required path: /lib/core/FutureLink
-//
+namespace FutureLink;
 // Programmer: Robert Plummer
 //
 // Purpose: Adds PastLink UI to page.  Makes it so that sentences wrapped in a PastLink are distinguished from the rest of the text in a page for the end user
 
-Class FutureLink_PastUI extends Feed_Abstract
+Class PastUI extends Feed
 {
 	public $type = 'futurelink';
 	public $version = 0.1;
@@ -29,7 +21,7 @@ Class FutureLink_PastUI extends Feed_Abstract
 		$this->page = $page;
 
 		if (!empty($page) && !empty($data)) {
-			$this->metadata = FutureLink_MetadataAssembler::pagePastLink($page, $data);
+			$this->metadata = MetadataAssembler::pagePastLink($page, $data);
 		}
 
 		return parent::__construct($page);
@@ -37,9 +29,9 @@ Class FutureLink_PastUI extends Feed_Abstract
 
 	static function add($clipboarddata, $page, $data)
 	{
-		$me = new FutureLink_PastUI($page, $data);
+		$me = new PastUI($page, $data);
 
-		$item = new FutureLink_Pair( $me->metadata->raw, $clipboarddata );
+		$item = new Pair( $me->metadata->raw, $clipboarddata );
 
 		if (isset(self::$addedHashes[$item->pastlink->hash])) {
             return null;
@@ -48,22 +40,22 @@ Class FutureLink_PastUI extends Feed_Abstract
 		self::$addedHashes[$item->pastlink->hash] = true;
 		$item->futurelink->href = str_replace(' ', '+', $item->futurelink->href);
 
-        Type::Pairs(FutureLink_PastUI::$pairs)->add($item);
+        PastUI::$pairs->add($item);
 
-		return FutureLink_PastUI::$pairs->length;
+		return PastUI::$pairs->length;
 	}
 
 	static function clearAll()
 	{
-        FutureLink_PastUI::$pairs = new FutureLink_Pairs();
+        PastUI::$pairs = new Pairs();
 	}
 
 	public function getContents()
 	{
-		if (FutureLink_PastUI::$pairs->length > 0) {
-			$this->setEncoding(TikiFilter_PrepareInput::delimiter('_')->toString(FutureLink_PastUI::$pairs));
+		if (PastUI::$pairs->length > 0) {
+			$this->setEncoding(TikiFilter_PrepareInput::delimiter('_')->toString(PastUI::$pairs));
 
-			return FutureLink_PastUI::$pairs;
+			return PastUI::$pairs;
 		}
 
 		return array();
@@ -74,7 +66,7 @@ Class FutureLink_PastUI extends Feed_Abstract
 		global $page, $headerlib;
 		$me = new self();
 		$phrase = (!empty($_REQUEST['phrase']) ? $_REQUEST['phrase'] : '');
-		FutureLink_Search::restorePastLinkPhrasesInWikiPage($me->getItems(), $phrase);
+		Search::restorePastLinkPhrasesInWikiPage($me->getItems(), $phrase);
 
 		//if we have an awaiting PastLink that needs sent, we do so here
 		$result = (new Tracker_Query('Wiki Attributes'))
@@ -85,7 +77,7 @@ Class FutureLink_PastUI extends Feed_Abstract
 			->query();
 
 		if (count($result) > 0) {
-			foreach (FutureLink_SendToFuture::sendAll() as $text => $received) {
+			foreach (SendToFuture::sendAll() as $text => $received) {
 				$receivedJSON = json_decode($received);
 				if (isset($receivedJSON->feed) && $receivedJSON->feed == 'success') {
                     (new Tracker_Query('Wiki Attributes'))
@@ -124,4 +116,4 @@ Class FutureLink_PastUI extends Feed_Abstract
 }
 
 //define pairs
-FutureLink_PastUI::$pairs = new FutureLink_Pairs();
+PastUI::$pairs = new Pairs();

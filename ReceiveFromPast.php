@@ -1,18 +1,7 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-// 
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: ReceiveFromPast.php 47984 2013-10-11 17:36:21Z robertplummer $
+namespace FutureLink;
 
-// File name: Receive.php
-// Required path: /lib/core/FutureLink
-//
-// Programmer: Robert Plummer
-//
-// Purpose: Verify that incoming URI is requesting a FutureLink destination on this site and redirect accordingly.
-
-Class FutureLink_ReceiveFromPast extends Feed_Abstract
+Class ReceiveFromPast extends Feed_Abstract
 {
 	var $type = "futurelink";
 	var $isFileGal = false;

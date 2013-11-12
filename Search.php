@@ -1,19 +1,10 @@
 <?php
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Search.php 48022 2013-10-15 09:11:18Z chibaguy $
+namespace FutureLink;
 
-// File name: Search.php
-// Required path: /lib/core/Feed/FutureLink
-//
-// Programmer: Robert Plummer
-//
 // Purpose: Locate, highlight, and scroll to requested FutureLink destination.  Add superscripted ForwardLink
 //          indicators wherever FutureLinks exist within displayed page.
 
-class FutureLink_Search
+class Search
 {
 	var $type = "futurelink";
 	var $version = 0.1;
