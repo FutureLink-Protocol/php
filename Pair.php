@@ -8,7 +8,7 @@ class Pair
 
     public function __construct(&$pastlink, &$futurelink)
     {
-        $this->futurelink =& FutureLink_MetadataAssembler::fromRawToMetaData($futurelink);
-        $this->pastlink =& FutureLink_MetadataAssembler::fromRawToMetaData($pastlink);
+        $this->futurelink =& MetadataAssembler::fromRawToMetaData($futurelink);
+        $this->pastlink =& MetadataAssembler::fromRawToMetaData($pastlink);
     }
 }

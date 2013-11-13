@@ -153,19 +153,4 @@ abstract class Feed
 
 		return $feed;
 	}
-
-	public function listArchives()
-	{
-		$archives = array();
-
-		if ($this->isFileGal == true) {
-			$file = FileGallery_File::filename($this->name);
-			foreach ($file->listArchives() as $archive) {
-				$archive = $this->open();
-				$archives[$archive->feed->date] = $archive->feed->entry;
-			}
-		}
-
-		return $archives;
-	}
 }

@@ -3,6 +3,7 @@ namespace FutureLink;
 
 // Purpose: Locate, highlight, and scroll to requested FutureLink destination.  Add superscripted ForwardLink
 //          indicators wherever FutureLinks exist within displayed page.
+use Phraser;
 
 class Search
 {
@@ -30,7 +31,7 @@ class Search
 		if (empty($phrase)) return;
 
         // if successful, will return an array with page, version, data, date, and phrase
-        $newestRevision = self::findWikiRevision($phrase);
+        $newestRevision = Search::findWikiRevision($phrase);
 
 		if ($newestRevision == false) {
             //TODO: abstract
@@ -63,7 +64,7 @@ JQ
 	{
 		global $tikilib;
         //TODO: abstract
-		$phrase = JisonParser_Phraser_Handler::superSanitize($phrase);
+		$phrase = Phraser\Parser::superSanitize($phrase);
 
         // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
         // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
@@ -102,7 +103,7 @@ JQ
 	{
         //TODO: abstract
 		global $tikilib, $headerlib, $smarty;
-		$phrase = JisonParser_Phraser_Handler::superSanitize($phrase);
+		$phrase = Phraser\Parser::superSanitize($phrase);
 		$phrases = array();
 		$phraseMatchIndex = -1;
 
@@ -113,7 +114,7 @@ JQ
 
 		foreach ($items as $i => $item) {
 			if (!empty($item->pastlink->href)) {
-				if (JisonParser_Phraser_Handler::hasPhrase($parsed, $item->futurelink->text) != true) {
+				if (Phraser\Parser::hasPhrase($parsed, $item->futurelink->text) != true) {
 					continue;
 				}
 
@@ -121,7 +122,7 @@ JQ
 
 				$i = count($phrases) - 1;
 
-				if (JisonParser_Phraser_Handler::superSanitize($phrase) == JisonParser_Phraser_Handler::superSanitize($item->futurelink->text)) {
+				if (Phraser\Parser::superSanitize($phrase) == Phraser\Parser::superSanitize($item->futurelink->text)) {
 					$phraseMatchIndex = $i;
 				}
 
@@ -143,7 +144,7 @@ JQ
 			}
 		}
 
-		$phraser = new JisonParser_Phraser_Handler();
+		$phraser = new Phraser\Parser();
 		$phraser->setCssWordClasses(
 			array(
 				'start'=>'futurelinkStart',
@@ -168,7 +169,7 @@ JQ
 	static function restorePastLinkPhrasesInWikiPage($items, $phrase = "")
 	{
 		global $tikilib, $headerlib, $smarty;
-		$phrase = JisonParser_Phraser_Handler::superSanitize($phrase);
+		$phrase = Phraser\Parser::superSanitize($phrase);
 		$phrases = array();
 		$phraseMatchIndex = -1;
 
@@ -179,7 +180,7 @@ JQ
 
 		foreach ($items as &$item) {
 			if (!empty($item->futurelink->href)) {
-				if (JisonParser_Phraser_Handler::hasPhrase($parsed, $item->pastlink->text) != true) {
+				if (Phraser\Parser::hasPhrase($parsed, $item->pastlink->text) != true) {
 					continue;
 				}
 
@@ -187,7 +188,7 @@ JQ
 
 				$i = count($phrases) - 1;
 
-				if (JisonParser_Phraser_Handler::superSanitize($phrase) == JisonParser_Phraser_Handler::superSanitize($item->pastlink->text)) {
+				if (Phraser\Parser::superSanitize($phrase) == Phraser\Parser::superSanitize($item->pastlink->text)) {
 					$phraseMatchIndex = $i;
 				}
 
@@ -209,7 +210,7 @@ JQ
 			}
 		}
 
-		$phraser = new JisonParser_Phraser_Handler();
+		$phraser = new Phraser\Parser();
 
 		$phraser->setCssWordClasses(
 			array(
@@ -232,7 +233,7 @@ JQ
 		self::restorePhrasesInWikiPage($phraser, $phrases);
 	}
 
-	static function restorePhrasesInWikiPage(JisonParser_Phraser_Handler $phraser, $phrases)
+	static function restorePhrasesInWikiPage(Phraser\Parser $phraser, $phrases)
 	{
 		global $headerlib, $smarty;
 		//TODO - not sure the tablesorter js and css files need to be loaded since they are loaded in tiki-setup

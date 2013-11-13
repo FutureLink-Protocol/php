@@ -1,7 +1,7 @@
 <?php
 namespace FutureLink;
 
-Class ReceiveFromPast extends Feed_Abstract
+Class ReceiveFromPast extends Feed
 {
 	var $type = "futurelink";
 	var $isFileGal = false;
@@ -14,7 +14,7 @@ Class ReceiveFromPast extends Feed_Abstract
         //TODO: abstract
 		if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_POST['metadata'])) {
 			$me = new self($args['object']);
-			$futureLink = new FutureLink_FutureUI($args['object']);
+			$futureLink = new FutureUI($args['object']);
 
 			//here we do the confirmation that another wiki is trying to talk with this one
 			$metadata = json_decode($_POST['metadata']);
