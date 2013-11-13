@@ -5,6 +5,8 @@ namespace FutureLink;
 // Purpose: Inject FutureLink UI components into Wiki editing screens.  Managed page's saved attributes per
 //          FutureLink UI interaction.  Generates and presents FutureLink text string to user.
 
+use Phraser;
+
 Class FutureUI extends Feed
 {
 	var $type = 'futurelink';
@@ -21,21 +23,8 @@ Class FutureUI extends Feed
 	function __construct($page)
 	{
 		$this->page = $page;
-		$this->metadata = MetadataAssembler::pageFutureLink($page);
+		$this->metadata = MetadataAssembler::futureLink($page);
 		return parent::__construct($page);
-	}
-
-	private function getTimeStamp()
-	{
-		//May be used soon for encrypting futurelinks
-		if (isset($_REQUEST['action'], $_REQUEST['hash']) && $_REQUEST['action'] == 'timestamp') {
-			$client = new Zend_Http_Client(TikiLib::tikiUrl() . 'tiki-timestamp.php', array('timeout' => 60));
-			$client->setParameterGet('hash', $_REQUEST['hash']);
-			$client->setParameterGet('clienttime', time());
-			$response = $client->request();
-			echo $response->getBody();
-			exit();
-		}
 	}
 
 	function editInterfaces()
@@ -553,38 +542,20 @@ JQ
 			->add_jsfile('lib/core/JisonParser/Phraser.js')
 			->add_jsfile('vendor/jquery/md5/md5.js');
 
-		$me = new FutureLink_FutureUI($page);
+		$me = new FutureUI($page);
 
 		$phrase = (!empty($_POST['phrase']) ? $_POST['phrase'] : '');
-		FutureLink_Search::goToNewestWikiRevision($version, $phrase);
-        FutureLink_Search::restoreFutureLinkPhrasesInWikiPage($me->getItems(), $phrase);
+		Search::goToNewestWikiRevision($version, $phrase);
+        Search::restoreFutureLinkPhrasesInWikiPage($me->getItems(), $phrase);
 
 		$me->editInterfaces();
 		$me->createPastLinksInterface();
 	}
 
-	static function wikiSave($args)
+	static function save($page, $body, $version)
 	{
-		global $groupPluginReturnAll;
-		$groupPluginReturnAll = true;
-		$body = TikiLib::lib('tiki')->parse_data($args['data']);
-		$groupPluginReturnAll = false;
-
-		$page = $args['object'];
-		$version = $args['version'];
-
-		$body = JisonParser_Phraser_Handler::superSanitize($body);
-
-        (new Tracker_Query('Wiki Attributes'))
-			->byName()
-			->replaceItem(
-				array(
-					'Page' => $page,
-					'Attribute' => $version,
-					'Value' => $body,
-					'Type' => 'FutureLink Revision'
-				)
-			);
+		$body = Phraser\Parser::superSanitize($body);
+        Events::triggerCreateRevision($page, $body, $version);
 	}
 
 	function addItem($item)
@@ -611,8 +582,6 @@ JQ
 
 	function appendToContents(&$contents, $item)
 	{
-		global $prefs, $_REQUEST;
-
 		if ($this->debug == true) {
 			ini_set('error_reporting', E_ALL);
 			ini_set('display_errors', 1);
@@ -634,9 +603,9 @@ JQ
 				}
 			}
 
-			$revision = FutureLink_Search::findWikiRevision($newEntry->futurelink->text);
+			$revision = Search::findRevision($newEntry->futurelink->text);
 
-			$this->verifications[$i]["hashBy"] = JisonParser_Phraser_Handler::superSanitize(
+			$this->verifications[$i]["hashBy"] = Phraser\Parser::superSanitize(
 				$newEntry->futurelink->author .
 				$newEntry->futurelink->authorInstitution .
 				$newEntry->futurelink->authorProfession
@@ -646,10 +615,10 @@ JQ
 
 			$this->verifications[$i]["metadataHere"] = $this->metadata->raw;
 
-			$this->verifications[$i]["phraseThere"] = Phraser\Handler::superSanitize($newEntry->futurelink->text);
+			$this->verifications[$i]["phraseThere"] = Phraser\Parser::superSanitize($newEntry->futurelink->text);
 			$this->verifications[$i]["hashHere"] = hash_hmac("md5", $this->verifications[$i]["hashBy"], $this->verifications[$i]["phraseThere"]);
 			$this->verifications[$i]["hashThere"] = $newEntry->futurelink->hash;
-			$this->verifications[$i]['exists'] = Phraser_Handler::hasPhrase(
+			$this->verifications[$i]['exists'] = Phraser\Parser::hasPhrase(
 				$revision['data'],
 				$this->verifications[$i]["phraseThere"]
 			);
@@ -658,12 +627,13 @@ JQ
 				$this->verifications[$i]['reason'][] = 'hash_tampering';
 				unset($item->feed->entry[$i]);
 			}
-
+/*
+ * This does need added
 			if ($newEntry->futurelink->websiteTitle != $prefs['browsertitle']) {
 				$this->verifications[$i]['reason'][] = 'title';
 				unset($item->feed->entry[$i]);
 			}
-
+*/
 			if ($this->verifications[$i]['exists'] == false) {
 				if (empty($this->verifications[$i]['reason'])) {
 					$this->verifications[$i]['reason'][] = 'no_existence_hash_pass';
@@ -697,16 +667,7 @@ JQ
 			$this->itemsAdded = true;
 
 			foreach ($item->feed->entry as &$entry) {
-                (new Tracker_Query('Wiki Attributes'))
-					->byName()
-					->replaceItem(
-						array(
-							'Page' => $this->page,
-							'Attribute' => '',
-							'Value' => $entry->futurelink->text,
-							'Type' => 'FutureLink Accepted'
-						)
-					);
+                Events::triggerAccepted($this->name, $entry->futurelink->text);
 			}
 
 			if (empty($contents->entry) == true) {

@@ -26,7 +26,7 @@ Class ReceiveFromPast extends Feed
 				$me->response = 'failure';
 			}
 
-			$feed = $me->feed(TikiLib::tikiUrl() . 'tiki-index.php?page=' . $args['object']);
+			$feed = $me->feed($_SERVER['REQUEST_URI']);
 
 			if (
 				$me->response == 'failure' &&

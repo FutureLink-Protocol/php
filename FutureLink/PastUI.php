@@ -21,7 +21,7 @@ Class PastUI extends Feed
 		$this->page = $page;
 
 		if (!empty($page) && !empty($data)) {
-			$this->metadata = MetadataAssembler::pagePastLink($page, $data);
+			$this->metadata = MetadataAssembler::pastLink($page, $data);
 		}
 
 		return parent::__construct($page);

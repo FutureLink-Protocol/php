@@ -60,37 +60,27 @@ JQ
 		}
 	}
 
-	static function findWikiRevision($phrase)
+	static function findRevision($phrase)
 	{
-		global $tikilib;
-        //TODO: abstract
+        $name = '';
+        $version = '';
+        $data = '';
+        $date = '';
+
 		$phrase = Phraser\Parser::superSanitize($phrase);
 
         // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
         // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
-		$query = (new Tracker_Query('Wiki Attributes'))
-			->byName()
-			->filterFieldByValueLike('Value', $phrase)
-			->render(false)
-			->getLast();
+        Events::triggerLookupRevision($phrase, $name, $version, $data, $date);
 
         // TODO: consider adding a test on query failure in order to determine whether:
         //       1) the phrase isn't found, or
         //       2) the Simple Wiki Attributes profile wasn't in place at page-creation
         // ...then display a more meaningful error message
-		if (empty($query)) return false; //couldn't find it
-
-		$query = end($query); //query has a key of itemId, we just need it's details
-		$version = $query['Attribute'];
-		$page = $query['Page'];
-		$data = $query['Value'];
-
-		$date = $tikilib->getOne('SELECT lastModif FROM tiki_pages WHERE pageName = ? AND version = ?', array($page, $version));
-
-		if (empty($date) == true) $date = $tikilib->getOne('SELECT lastModif FROM tiki_history WHERE pageName = ? AND version = ?', array($page, $version));
+		if (empty($name)) return false; //couldn't find it
 
 		return array(
-			'page' => $page,
+			'name' => $name,
 			'version' => $version,
 			'data' => $data,
 			'date' => $date,

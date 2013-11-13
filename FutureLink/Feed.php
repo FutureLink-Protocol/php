@@ -143,7 +143,7 @@ abstract class Feed
 		$contents = $this->getContents();
 
         //TODO: convert to actual object
-		$feed = new Feed_Container(
+		$feed = new Container(
 			$this->version,
 			$this->encoding, //we get this from the above call to open
 			$contents,
