@@ -1,5 +1,6 @@
 <?php
     require_once "../autoload.php";
+    require_once "rb.php";
 
     $metadata = new FLP\Metadata();
 
@@ -27,9 +28,37 @@
 
 
     $clipboarddata = json_encode($metadata);
+    $title = 'The FutureLink-Protocol';
+    $body = <<<Body
+    <p>We want to take the present-day web-functionality of "link" and "backlink" and enhance it for use by scholars. So when we talk of an "enhanced Link" we'll call it a "PastLink", and an "enhanced Backlink" will be called a "FutureLink".</p>
+
+    <p>The term Backlink is very confusing because a Backlink points forwards in time (see Fig. below in Section 2.3).</p>
+
+    <p>The difference in terminology between a FutureLink and a Backlink is the difference in viewpoint between an Author and a Reader:</p>
+
+    <p>An Author creates a Link from a newer article to an older one, and thus can imagine a Backlink from the older article pointing "back" to the Author's newer article. NB: "Back" here does not mean "backwards in time", it means "back to an origin".</p>
+
+    <p>A Reader of the older article sees the link to a newer article as a "FutureLink" (Forwards-in-time), and is confused if it is called a "Backlink". NB: "Forward" here means "Forward-in-time".</p>
+Body;
+    $msg = '';
+
+    R::setup();
+    $article = R::dispense('article');
+
+    $foundArticle = R::find('article',' title = ? ', array($title));
+
+    if (!$foundArticle) {
+        $article->title = $title;
+        $article->body = $body;
+        $article->sanitized = Phraser\Parser::superSanitize($body);
+        R::store($article);
+        $msg = 'Article Created';
+    }
+
+
 ?><!DOCTYPE html><html>
 <head>
-    <title>The FutureLink-Protocol</title>
+    <title>The FutureLink-Protocol <?php echo (empty($msg) ? '' : '(' . $msg . ')')?></title>
     <script src="../jquery-1.10.2.min.js"></script>
     <script src="../md5.min.js"></script>
     <script src="../Phraser/rangy/rangy-core.js"></script>
@@ -41,6 +70,7 @@
                 var text = rangy.getSelection().text(),
                     clipboarddata = $.parseJSON('<?php echo $clipboarddata ?>');
 
+                clipboarddata.href = document.location;
                 clipboarddata.text = text;
                 clipboarddata.hash = md5(
                     rangy.superSanitize(
@@ -60,16 +90,7 @@
     </script>
 </head>
 <body>
-    <p>We want to take the present-day web-functionality of "link" and "backlink" and enhance it for use by scholars. So when we talk of an "enhanced Link" we'll call it a "PastLink", and an "enhanced Backlink" will be called a "FutureLink".</p>
-
-    <p>The term Backlink is very confusing because a Backlink points forwards in time (see Fig. below in Section 2.3).</p>
-
-    <p>The difference in terminology between a FutureLink and a Backlink is the difference in viewpoint between an Author and a Reader:</p>
-
-    <p>An Author creates a Link from a newer article to an older one, and thus can imagine a Backlink from the older article pointing "back" to the Author's newer article. NB: "Back" here does not mean "backwards in time", it means "back to an origin".</p>
-
-    <p>A Reader of the older article sees the link to a newer article as a "FutureLink" (Forwards-in-time), and is confused if it is called a "Backlink". NB: "Forward" here means "Forward-in-time".</p>
-
+    <?php echo $body;?>
     <input type="button" id="button" value="Create PastLink"/>
 </body>
 </html>
