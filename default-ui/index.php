@@ -5,9 +5,14 @@ require_once "../autoload.php";
 $metadata = new FLP\Metadata();
 
 $metadata->author = "Don Jewett";
-$metadata->answers = array();
 $metadata->authorInstitution = "";
 $metadata->authorProfession = "Brain Scientist";
+
+$metadata->moderator = "Robert Plummer";
+$metadata->moderatorInstitution = "Visual Interop Development llc";
+$metadata->moderatorProfession = "Software Engineer";
+
+$metadata->answers = array();
 $metadata->categories = array();
 $metadata->dateLastUpdated = time();
 $metadata->dateOriginated = time();
@@ -19,6 +24,7 @@ $metadata->minimumStatisticsNeeded = "";
 $metadata->scientificField = "";
 $metadata->websiteTitle = "FutureLink-Protocol Demo";
 $metadata->websiteSubtitle = "In php";
+
 
 $clipboarddata = json_encode($metadata);
 ?><html>
