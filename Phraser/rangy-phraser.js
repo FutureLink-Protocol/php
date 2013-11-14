@@ -107,7 +107,7 @@ rangy.createModule("Phraser", function(api, module) {
 	    		tagHandler: 	function(tag) { return tag; },
 	    		charHandler: 	function(ch) { return ch; }
 		    }, options);
-		    
+
 		    Phraser = $.extend(Phraser, options);
 		    
 		    return Phraser.parse(phrase);

@@ -1,44 +1,62 @@
 <?php
+    require_once "../autoload.php";
 
-require_once "../autoload.php";
+    $metadata = new FLP\Metadata();
 
-$metadata = new FLP\Metadata();
+    $metadata->author = "Don Jewett";
+    $metadata->authorInstitution = "";
+    $metadata->authorProfession = "Brain Scientist";
 
-$metadata->author = "Don Jewett";
-$metadata->authorInstitution = "";
-$metadata->authorProfession = "Brain Scientist";
+    $metadata->moderator = "Robert Plummer";
+    $metadata->moderatorInstitution = "Visual Interop Development llc";
+    $metadata->moderatorProfession = "Software Engineer";
 
-$metadata->moderator = "Robert Plummer";
-$metadata->moderatorInstitution = "Visual Interop Development llc";
-$metadata->moderatorProfession = "Software Engineer";
-
-$metadata->answers = array();
-$metadata->categories = array();
-$metadata->dateLastUpdated = time();
-$metadata->dateOriginated = time();
-$metadata->href = "http://www.github.com/FutureLink-Protocol/php";
-$metadata->keywords = array();
-$metadata->language = "English";
-$metadata->minimumMathNeeded = "";
-$metadata->minimumStatisticsNeeded = "";
-$metadata->scientificField = "";
-$metadata->websiteTitle = "FutureLink-Protocol Demo";
-$metadata->websiteSubtitle = "In php";
+    $metadata->answers = array();
+    $metadata->categories = array();
+    $metadata->count = 0;
+    $metadata->dateLastUpdated = time();
+    $metadata->dateOriginated = time();
+    $metadata->href = "http://www.github.com/FutureLink-Protocol/php";
+    $metadata->keywords = array();
+    $metadata->language = "English";
+    $metadata->minimumMathNeeded = "";
+    $metadata->minimumStatisticsNeeded = "";
+    $metadata->scientificField = "";
+    $metadata->websiteTitle = "FutureLink-Protocol Demo";
+    $metadata->websiteSubtitle = "In php";
 
 
-$clipboarddata = json_encode($metadata);
-?><html>
+    $clipboarddata = json_encode($metadata);
+?><!DOCTYPE html><html>
 <head>
-    <script src="../jquery.md5.js"></script>
+    <title>The FutureLink-Protocol</title>
+    <script src="../jquery-1.10.2.min.js"></script>
+    <script src="../md5.min.js"></script>
     <script src="../Phraser/rangy/rangy-core.js"></script>
     <script src="../Phraser/rangy/rangy-textrange.js"></script>
     <script src="../Phraser/rangy-phraser.js"></script>
     <script>
-        var clipboarddata = '<?php echo $clipboarddata ?>;';
+        $(function() {
+            $('#button').click(function() {
+                var text = rangy.getSelection().text(),
+                    clipboarddata = $.parseJSON('<?php echo $clipboarddata ?>');
 
-        function createPastLink(text) {
+                clipboarddata.text = text;
+                clipboarddata.hash = md5(
+                    rangy.superSanitize(
+                        clipboarddata.author +
+                            clipboarddata.authorInstitution +
+                            clipboarddata.authorProfession
+                    )
+                    ,
+                    rangy.superSanitize(clipboarddata.text)
+                );
 
-        }
+                prompt('Here is your clipboard data', encodeURIComponent(JSON.stringify(clipboarddata)));
+                return false;
+            });
+        });
+
     </script>
 </head>
 <body>
@@ -52,7 +70,7 @@ $clipboarddata = json_encode($metadata);
 
     <p>A Reader of the older article sees the link to a newer article as a "FutureLink" (Forwards-in-time), and is confused if it is called a "Backlink". NB: "Forward" here means "Forward-in-time".</p>
 
-    <input type="button" value="Create PastLink" onclick="createPastLink(this.value);return false;"/>
+    <input type="button" id="button" value="Create PastLink"/>
 </body>
 </html>
 
