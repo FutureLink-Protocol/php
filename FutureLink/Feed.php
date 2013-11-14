@@ -14,21 +14,9 @@ abstract class Feed
 	public $version = "0.0";
 	public $encoding = "";
 
-	function __construct($name = "")
+	function __construct($name)
 	{
-		if (empty($name)) {
-			$name = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-			$name = explode('/', $name);
-			array_pop($name);
-			$name = implode($name, '/');
-		} else {
-			$name = str_replace("http://", "", $name);
-			$name = str_replace("https://", "", $name);
-			$name = explode('/', $name);
-			$name = array_shift($name);
-		}
-
-		$this->name = $this->type . "_" . $name;
+		$this->name = $name;
 	}
 
 	public function getItems()
@@ -137,17 +125,15 @@ abstract class Feed
 		return $this;
 	}
 
-	public function feed($origin = '')
+	public function feed($origin)
 	{
-		global $tikilib;
 		$contents = $this->getContents();
 
-        //TODO: convert to actual object
 		$feed = new Container(
 			$this->version,
-			$this->encoding, //we get this from the above call to open
+			$this->encoding,
 			$contents,
-            (!empty($origin) ? $origin : $tikilib->tikiUrl() . 'tiki-feed.php'),
+            $origin,
 			$this->type
 		);
 

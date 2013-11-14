@@ -53,7 +53,7 @@ Class PastUI extends Feed
 	public function getContents()
 	{
 		if (PastUI::$pairs->length > 0) {
-			$this->setEncoding(TikiFilter_PrepareInput::delimiter('_')->toString(PastUI::$pairs));
+			$this->setEncoding(PastUI::$pairs->raw());
 
 			return PastUI::$pairs;
 		}

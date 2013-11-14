@@ -11,4 +11,14 @@ class Pairs
         $this->entry[] = $metadata;
         $this->length++;
     }
+
+    public function raw()
+    {
+        $raw = '';
+        foreach($this->entry as $pair)
+        {
+            $raw .= $pair->raw();
+        }
+        return $raw;
+    }
 }

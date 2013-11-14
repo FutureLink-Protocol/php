@@ -9,12 +9,28 @@ class Search
 {
 	var $type = "futurelink";
 	var $version = 0.1;
-	var $page = '';
+	var $name = '';
 
-	function __construct($page)
+	function __construct($name)
 	{
-		$this->page = $page;
+		$this->name = $name;
 	}
+
+    static function findRevision(Phraser\Phrase $text)
+    {
+        $revision = null;
+
+        // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
+        // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
+        Events::triggerLookupRevision($text, $revision);
+
+        // TODO: consider adding a test on query failure in order to determine whether:
+        //       1) the phrase isn't found, or
+        //       2) the Simple Wiki Attributes profile wasn't in place at page-creation
+        // ...then display a more meaningful error message
+
+        return $revision;
+    }
 
 	static function goToNewestWikiRevision($version, &$phrase)
 	{
@@ -31,7 +47,7 @@ class Search
 		if (empty($phrase)) return;
 
         // if successful, will return an array with page, version, data, date, and phrase
-        $newestRevision = Search::findWikiRevision($phrase);
+        $newestRevision = Search::findRevision($phrase);
 
 		if ($newestRevision == false) {
             //TODO: abstract
@@ -60,42 +76,13 @@ JQ
 		}
 	}
 
-	static function findRevision($phrase)
-	{
-        $name = '';
-        $version = '';
-        $data = '';
-        $date = '';
 
-		$phrase = Phraser\Parser::superSanitize($phrase);
-
-        // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
-        // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
-        Events::triggerLookupRevision($phrase, $name, $version, $data, $date);
-
-        // TODO: consider adding a test on query failure in order to determine whether:
-        //       1) the phrase isn't found, or
-        //       2) the Simple Wiki Attributes profile wasn't in place at page-creation
-        // ...then display a more meaningful error message
-		if (empty($name)) return false; //couldn't find it
-
-		return array(
-			'name' => $name,
-			'version' => $version,
-			'data' => $data,
-			'date' => $date,
-			'phrase' => $phrase
-		);
-	}
-
-
-	static function restoreFutureLinkPhrasesInWikiPage($items, $phrase = "")
+	static function restoreFutureLinkPhrasesInWikiPage($items, Text $text)
 	{
         //TODO: abstract
 		global $tikilib, $headerlib, $smarty;
-		$phrase = Phraser\Parser::superSanitize($phrase);
-		$phrases = array();
-		$phraseMatchIndex = -1;
+		$texts = array();
+		$textMatchIndex = -1;
 
 		$parsed = $smarty->getTemplateVars('parsed');
 		if (empty($parsed)) {
@@ -112,7 +99,7 @@ JQ
 
 				$i = count($phrases) - 1;
 
-				if (Phraser\Parser::superSanitize($phrase) == Phraser\Parser::superSanitize($item->futurelink->text)) {
+				if ($text->sanitized == Phraser\Parser::superSanitize($item->futurelink->text)) {
 					$phraseMatchIndex = $i;
 				}
 
@@ -143,9 +130,9 @@ JQ
 			)
 		);
 
-		if ($phraseMatchIndex > -1) {
+		if ($textMatchIndex > -1) {
 			$headerlib->add_jq_onready(
-				"var selection = $('span.futurelinkStart". $phraseMatchIndex.",span.futurelinkEnd".$phraseMatchIndex."').realHighlight();
+				"var selection = $('span.futurelinkStart". $textMatchIndex.",span.futurelinkEnd".$textMatchIndex."').realHighlight();
 
 				$('body,html').animate({
 					scrollTop: selection.first().offset().top - 10
@@ -153,14 +140,13 @@ JQ
 			);
 		}
 
-		self::restorePhrasesInWikiPage($phraser, $phrases);
+		self::restorePhrasesInWikiPage($phraser, $texts);
 	}
 
-	static function restorePastLinkPhrasesInWikiPage($items, $phrase = "")
+	static function restorePastLinkPhrasesInWikiPage($items, Text $text)
 	{
 		global $tikilib, $headerlib, $smarty;
-		$phrase = Phraser\Parser::superSanitize($phrase);
-		$phrases = array();
+		$texts = array();
 		$phraseMatchIndex = -1;
 
 		$parsed = $smarty->getTemplateVars('parsed');
@@ -178,7 +164,7 @@ JQ
 
 				$i = count($phrases) - 1;
 
-				if (Phraser\Parser::superSanitize($phrase) == Phraser\Parser::superSanitize($item->pastlink->text)) {
+				if ($text->sanitized == Phraser\Parser::superSanitize($item->pastlink->text)) {
 					$phraseMatchIndex = $i;
 				}
 
@@ -220,10 +206,10 @@ JQ
 			);
 		}
 
-		self::restorePhrasesInWikiPage($phraser, $phrases);
+		self::restorePhrasesInWikiPage($phraser, $texts);
 	}
 
-	static function restorePhrasesInWikiPage(Phraser\Parser $phraser, $phrases)
+	static function restorePhrasesInWikiPage(Phraser\Parser $phraser, $texts)
 	{
 		global $headerlib, $smarty;
 		//TODO - not sure the tablesorter js and css files need to be loaded since they are loaded in tiki-setup
@@ -275,11 +261,11 @@ JQ
 
 		$parsed = $smarty->getTemplateVars('parsed');
 		if (!empty($parsed)) {
-			$smarty->assign('parsed', $phraser->findPhrases($parsed, $phrases));
+			$smarty->assign('parsed', $phraser->findPhrases($parsed, $texts));
 		} else {
 			$previewd = $smarty->getTemplateVars('previewd');
 			if (!empty($previewd)) {
-				$previewd = $phraser->findPhrases($previewd, $phrases);
+				$previewd = $phraser->findPhrases($previewd, $texts);
 				$smarty->assign('previewd', $previewd);
 			}
 		}

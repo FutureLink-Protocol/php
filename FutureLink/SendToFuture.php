@@ -6,21 +6,15 @@ use Exception;
 
 class SendToFuture extends Feed
 {
-	public $type = 'futurelink';
+	public $name = 'futurelink';
     public $version = 0.1;
 
-	static function sendAll()
-	{
-		$me = new self();
-		return($me->send());
-	}
-
-	public static function send()
+	public static function send($origin)
 	{
 		$me = new self("global");
 		$sent = array();
 		$pastlink = new PastUI();
-		$feed = $pastlink->feed();
+		$feed = $pastlink->feed($origin);
         $result = '';
 
 		$items = array();

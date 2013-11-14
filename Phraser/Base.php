@@ -127,7 +127,7 @@ class Base
 		$this->clearIndexes();
 
 		foreach ($phrases as $phrase) {
-			$phraseWords = $this->sanitizeToWords($phrase);
+			$phraseWords = $this->sanitizeToWords($phrase->value);
 			$this->addIndexes($parentWords, $phraseWords);
 			$phrasesWords[] = $phraseWords;
 		}

@@ -1,6 +1,8 @@
 <?php
 namespace FutureLink;
 
+use Phraser;
+
 class Events
 {
 	//possible events, I hate to re-declare all of them, but it is strongly typed, what can you say
@@ -19,7 +21,7 @@ class Events
 		self::${$eventName}[] =& $event;
 	}
 
-    public static function triggerAccepted($name, $text)
+    public static function triggerAccepted($name, Phraser\Phrase $text)
     {
         foreach(self::$Accepted as &$event)
         {
@@ -51,11 +53,11 @@ class Events
         }
     }
 
-    public static function triggerLookupRevision($phrase, &$name, &$version, &$data, &$date)
+    public static function triggerLookupRevision(Phraser\Phrase $text, Revision &$revision)
     {
         foreach(self::$LookupRevision as &$event)
         {
-            $event->trigger($phrase, $name, $version, $data, $date);
+            $event->trigger($text, $revision);
         }
     }
 
