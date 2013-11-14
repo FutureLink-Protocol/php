@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink;
+namespace FLP;
 // Programmer: Robert Plummer
 //
 // Purpose: Inject FutureLink UI components into Wiki editing screens.  Managed page's saved attributes per
@@ -7,7 +7,7 @@ namespace FutureLink;
 
 use Phraser;
 
-Class FutureLink extends File
+Class FutureLink
 {
 	var $type = 'futurelink';
 	var $version = 0.1;
@@ -17,13 +17,14 @@ Class FutureLink extends File
 	var $metadata = array();
 	public $security;
 	var $itemsAdded = array();
+    public $file;
 
 	function __construct($name)
 	{
 		$this->security = new Security();
         $this->name = $name;
 		$this->metadata = MetadataAssembler::futureLink($name);
-		return parent::__construct($name);
+		$this->file = new File($name);
 	}
 
 	static function save($page, $body, $version)
@@ -34,13 +35,13 @@ Class FutureLink extends File
 
 	function addItem($item)
 	{
-		parent::addItem($item);
+		$this->file->replace($item);
 
 		$exists = array();
         $existsCount = 0;
 		$verificationsCount = $this->security->verificationsCount;
-		foreach ($this->verifications as &$verification) {
-			foreach ($verification['reason'] as $reason) {
+		foreach ($this->security->verifications as &$verification) {
+			foreach ($verification->reason as $reason) {
 				if ($reason == 'exists') {
 					$exists[] = true;
                     $existsCount++;

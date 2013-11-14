@@ -1,6 +1,6 @@
 <?php
 
-namespace FutureLink;
+namespace FLP;
 
 class Container
 {

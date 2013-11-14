@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink;
+namespace FLP;
 
 
 class Verification

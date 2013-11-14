@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink;
+namespace FLP;
 
 use Exception;
 // Purpose: Send a pastlink to a futurelink
@@ -13,7 +13,7 @@ class SendToFuture extends Feed
 	{
 		$me = new self("global");
 		$sent = array();
-		$pastlink = new PastUI();
+		$pastlink = new PastLink();
 		$feed = $pastlink->feed($origin);
         $result = '';
 

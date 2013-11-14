@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink;
+namespace FLP;
 
 use Phraser;
 
@@ -9,6 +9,7 @@ class Security
     public $itemsAdded = false;
     public $verifications = array();
     public $verificationsCount = 0;
+    public $metadata;
 
     function verify(Contents &$contents, $item)
     {
@@ -31,13 +32,23 @@ class Security
                 }
             }
 
-            $revision = Search::findRevision(new Phraser\Phrase($newEntry->futurelink->text));
+            // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
+            // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
+            // TODO: consider adding a test on query failure in order to determine whether:
+            //       1) the phrase isn't found, or
+            //       2) the Simple Wiki Attributes profile wasn't in place at page-creation
+            // ...then display a more meaningful error message
+            Events::triggerLookupRevision(new Phraser\Phrase($newEntry->futurelink->text), $revision = new Revision());
 
             $verification->hashBy = Phraser\Parser::superSanitize(
                 $newEntry->futurelink->author .
                 $newEntry->futurelink->authorInstitution .
                 $newEntry->futurelink->authorProfession
             );
+
+            if ($revision->version == null) {
+                unset($item->feed->entry[$i]);
+            }
 
             $verification->foundRevision = $revision;
             $verification->metadataHere = $this->metadata->raw;

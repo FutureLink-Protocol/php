@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink;
+namespace FLP;
 
 
 class Revision
@@ -10,7 +10,7 @@ class Revision
     public $date;
     public $phrase;
 
-    public function __construct($name, $version, $data, $date, $phrase)
+    public function __construct($name = null, $version = null, $data = null, $date = null, $phrase = null)
     {
         $this->name = $name;
         $this->version = $version;
