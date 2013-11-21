@@ -1,13 +1,13 @@
 <?php
-namespace FutureLink\Event;
+namespace FLP\Event;
 
 class Send extends Base
 {
-    public function trigger($url, $params, &$item, &$items)
+    public function trigger($url, $params, &$result, &$item, &$items)
     {
         foreach($this->delegates as &$delegate)
         {
-            $delegate($url, $params, $item, $items);
+            $delegate($url, $params, $result, $item, $items);
         }
     }
 }

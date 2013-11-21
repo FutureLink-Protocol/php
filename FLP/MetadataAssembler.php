@@ -29,54 +29,49 @@ class MetadataAssembler
 		'text' =>                       true
 	);
 
-	function __construct($name)
-	{
-		$this->name = $name;
-	}
-
-    static function fromRawToMetaData($raw)
+    static function fromJSONToMetaData($json)
     {
         $me = new Metadata();
-        $me->websiteTitle =             $raw->websiteTitle;
-        $me->websiteSubtitle =          $raw->websiteSubtitle;
-        $me->moderator =                $raw->moderator;
-        $me->moderatorInstitution=      $raw->moderatorInstitution;
-        $me->moderatorProfession=       $raw->moderatorProfession;
-        $me->hash=                      $raw->hash;
-        $me->author=                    $raw->author;
-        $me->dateLastUpdated=           $raw->dateLastUpdated;
-        $me->authorProfession=          $raw->authorProfession;
-        $me->href= 	                    $raw->href;
-        $me->answers=                   $raw->answers;
-        $me->dateLastUpdated=           $raw->dateLastUpdated;
-        $me->dateOriginated=            $raw->dateOriginated;
-        $me->language=                  $raw->language;
-        $me->count=                     $raw->countAll;
-        $me->keywords=                  $raw->keywords;
-        $me->categories=                $raw->categories;
-        $me->scientificField=           $raw->scientificField;
-        $me->minimumMathNeeded=         $raw->minimumMathNeeded;
-        $me->minimumStatisticsNeeded=   $raw->minimumStatisticsNeeded;
-        $me->text= 	                    $raw->text;
+        $me->websiteTitle =             $json->websiteTitle;
+        $me->websiteSubtitle =          $json->websiteSubtitle;
+        $me->moderator =                $json->moderator;
+        $me->moderatorInstitution=      $json->moderatorInstitution;
+        $me->moderatorProfession=       $json->moderatorProfession;
+        $me->hash=                      $json->hash;
+        $me->author=                    $json->author;
+        $me->dateLastUpdated=           $json->dateLastUpdated;
+        $me->authorProfession=          $json->authorProfession;
+        $me->href= 	                    $json->href;
+        $me->answers=                   $json->answers;
+        $me->dateLastUpdated=           $json->dateLastUpdated;
+        $me->dateOriginated=            $json->dateOriginated;
+        $me->language=                  $json->language;
+        $me->count=                     $json->count;
+        $me->keywords=                  $json->keywords;
+        $me->categories=                $json->categories;
+        $me->scientificField=           $json->scientificField;
+        $me->minimumMathNeeded=         $json->minimumMathNeeded;
+        $me->minimumStatisticsNeeded=   $json->minimumStatisticsNeeded;
+        $me->text= 	                    $json->text;
 
         return $me;
     }
 
-	static function pastLink($name, $data)
+	static function pastLink($data)
 	{
-		$me = new MetadataAssembler($name);
+		$me = new MetadataAssembler();
         $me->raw = new Metadata();
-        Events::triggerMetaLookup($name, 'PastLink', $me->raw);
+        Events::triggerMetadataLookup('PastLink', $me->raw);
 		$me->raw->text = $data;
 
 		return $me;
 	}
 
-	static function futureLink($name)
+	static function futureLink()
 	{
-		$me = new MetadataAssembler($name);
+		$me = new MetadataAssembler();
         $me->raw = new Metadata();
-        Events::triggerMetaLookup($name, 'FutureLink', $me->raw);
+        Events::triggerMetadataLookup('FutureLink', $me->raw);
 
 		return $me;
 	}

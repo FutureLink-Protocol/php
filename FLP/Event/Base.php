@@ -1,5 +1,5 @@
 <?php
-namespace FutureLink\Event;
+namespace FLP\Event;
 
 
 class Base

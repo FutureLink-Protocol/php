@@ -1,9 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: robert
+ * Date: 11/13/13
+ * Time: 1:38 PM
+ */
 
-namespace FutureLink\Event;
+namespace FLP\Event;
 
 
-class MetaLookup extends Base
+class MetadataSet extends Base
 {
     public function trigger($objectName, $item, &$value)
     {

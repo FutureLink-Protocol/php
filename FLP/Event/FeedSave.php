@@ -6,9 +6,10 @@
  * Time: 1:01 PM
  */
 
-namespace FutureLink\Event;
+namespace FLP\Event;
 
 
-class Revision {
+class FeedSave extends Base
+{
 
 } 

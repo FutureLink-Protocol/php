@@ -1,7 +1,7 @@
 <?php
 namespace FLP;
 
-class Pair
+class Pair extends Feeder
 {
     public $futurelink;
     public $pastlink;
@@ -14,8 +14,8 @@ class Pair
         $this->futureLinkRaw = $futurelink;
         $this->pastLinkRaw = $pastlink;
 
-        $this->futurelink =& MetadataAssembler::fromRawToMetaData($futurelink);
-        $this->pastlink =& MetadataAssembler::fromRawToMetaData($pastlink);
+        $this->futurelink =& MetadataAssembler::fromJSONToMetaData($futurelink);
+        $this->pastlink =& MetadataAssembler::fromJSONToMetaData($pastlink);
     }
 
     public function raw()

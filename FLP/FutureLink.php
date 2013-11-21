@@ -9,33 +9,27 @@ use Phraser;
 
 Class FutureLink
 {
-	var $type = 'futurelink';
-	var $version = 0.1;
-	var $debug = false;
-	static $pagesParsed = array();
-	static $parsedDatas = array();
-	var $metadata = array();
+	public $debug = false;
+	public $metadata = array();
 	public $security;
-	var $itemsAdded = array();
-    public $file;
+	public $itemsAdded = array();
 
 	function __construct($name)
 	{
 		$this->security = new Security();
         $this->name = $name;
 		$this->metadata = MetadataAssembler::futureLink($name);
-		$this->file = new File($name);
 	}
 
-	static function save($page, $body, $version)
+	static function save($name, $body, $version)
 	{
 		$body = Phraser\Parser::superSanitize($body);
-        Events::triggerCreateRevision($page, $body, $version);
+        Events::triggerCreateRevision($name, $body, $version);
 	}
 
 	function addItem($item)
 	{
-		$this->file->replace($item);
+		//$this->file->replace($item);
 
 		$exists = array();
         $existsCount = 0;

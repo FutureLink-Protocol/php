@@ -1,13 +1,13 @@
 <?php
 namespace FLP;
 
-Class ReceiveFromPast extends Feed
+Class ReceiveFromFuture extends Feeder
 {
-	public $type = "futurelink";
-    public $isFileGal = false;
+	public $name = "futurelink";
     public $version = 0.1;
     public $showFailures = false;
     public $response = 'failure';
+	public $reason;
 
 
 	public function getContents()

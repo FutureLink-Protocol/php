@@ -5,11 +5,10 @@ namespace FLP;
 class Contents
 {
     public $date = 0;
-    public $type;
-    public $entry = array();
+    public $items = array();
 
-    public function __construct($type)
-    {
-        $this->type = $type;
-    }
+	public function __construct()
+	{
+		$this->date = time();
+	}
 }

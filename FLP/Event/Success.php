@@ -1,8 +1,7 @@
 <?php
 namespace FLP\Event;
 
-
-class Receive
+class Success extends Base
 {
 
-} 
+}

@@ -8,22 +8,24 @@ class Events
 	//possible events, I hate to re-declare all of them, but it is strongly typed, what can you say
 	private static $Accepted = array();
 	private static $CreateRevision = array();
-	private static $MetaLookup = array();
+	private static $MetadataLookup = array();
 	private static $MetaSet = array();
-	private static $LookupRevision = array();
+	private static $FeedLookup = array();
+	private static $FeedSave = array();
+	private static $RevisionLookup = array();
 	private static $Receive = array();
 	private static $Send = array();
 
 	public static function bind(&$event)
 	{
 		//reduce to fully qualified class name, then remove WikiLingoEvent from front
-        $eventName = substr(str_replace("\\", "", get_class($event)), 15);
-		self::${$eventName}[] =& $event;
+        $eventName = substr(str_replace("\\", "", get_class($event)), 8);
+		Events::${$eventName}[] =& $event;
 	}
 
     public static function triggerAccepted($name, Phraser\Phrase $text)
     {
-        foreach(self::$Accepted as &$event)
+        foreach(Events::$Accepted as &$event)
         {
             $event->trigger($name, $text);
         }
@@ -31,31 +33,47 @@ class Events
 
     public static function triggerCreateRevision($page, $body, $version)
     {
-        foreach(self::$CreateRevision as &$event)
+        foreach(Events::$CreateRevision as &$event)
         {
             $event->trigger($page, $body, $version);
         }
     }
 
-    public static function triggerMetaLookup($objectName, $linkType, &$value)
+    public static function triggerMetadataLookup($linkType, &$value)
     {
-        foreach(self::$MetaLookup as &$event)
+        foreach(Events::$MetadataLookup as &$event)
         {
-            $event->trigger($objectName, $linkType, $value);
+            $event->trigger($linkType, $value);
         }
     }
 
-    public static function triggerMetaSet($objectName, $item, &$value)
+    public static function triggerMetadataSet($item, &$value)
     {
-        foreach(self::$MetaSet as &$event)
+        foreach(Events::$MetaSet as &$event)
         {
-            $event->trigger($objectName, $item, $value);
+            $event->trigger($item, $value);
         }
     }
 
-    public static function triggerLookupRevision(Phraser\Phrase $text, Revision &$revision)
+	public static function triggerFeedLookup($name)
+	{
+		foreach(Events::$FeedLookup as &$event)
+		{
+			$event->trigger($name);
+		}
+	}
+
+	public static function triggerFeedSave($name, $contents)
+	{
+		foreach(Events::$FeedLookup as &$event)
+		{
+			$event->trigger($name, $contents);
+		}
+	}
+
+    public static function triggerRevisionLookup(Phraser\Phrase $text, Revision &$revision)
     {
-        foreach(self::$LookupRevision as &$event)
+        foreach(Events::$RevisionLookup as &$event)
         {
             $event->trigger($text, $revision);
         }
@@ -63,7 +81,7 @@ class Events
 
     public static function triggerReceive($url, $params, &$result, &$data, &$items)
     {
-        foreach(self::$Receive as &$event)
+        foreach(Events::$Receive as &$event)
         {
             $event->trigger($url, $params, $result, $data, $items);
         }
@@ -71,9 +89,17 @@ class Events
 
     public static function triggerSend($url, $params, &$result, &$data, &$items)
     {
-        foreach(self::$Send as &$event)
+        foreach(Events::$Send as &$event)
         {
             $event->trigger($url, $params, $result, $data, $items);
         }
     }
+
+	public static function triggerSuccess(Pair &$pair)
+	{
+		foreach(Events::$Send as &$event)
+		{
+			$event->trigger($pair);
+		}
+	}
 }
