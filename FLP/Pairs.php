@@ -22,12 +22,12 @@ class Pairs extends Feeder
 		Pairs::$pairs[] = $pair;
 		Pairs::$length++;
 
-		if (isset(Pairs::$addedHashes[$pair->pastlink->hash])) {
+		if (isset(Pairs::$addedHashes[$pair->past->hash])) {
 			return null;
 		}
 
-		self::$addedHashes[$pair->pastlink->hash] = true;
-		$pair->futurelink->href = str_replace(' ', '+', $pair->futurelink->href);
+		self::$addedHashes[$pair->past->hash] = true;
+		$pair->future->href = str_replace(' ', '+', $pair->future->href);
 
 		Pairs::$pairs[] = $pair;
 

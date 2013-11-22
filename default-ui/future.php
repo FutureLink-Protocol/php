@@ -1,4 +1,9 @@
-<?php
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FutureLink-Protocol, Demo of Future Article linking to a PastLink</title>
+</head>
+<body><?php
 require_once "../autoload.php";
 require_once "rb.php";
 
@@ -65,11 +70,11 @@ if (!$foundArticle) {
 FLP\Pairs::add(new FLP\Pair($clipboarddata, $metadata));
 
 require_once("sender.php");
-?><!DOCTYPE html><html>
-<head>
-	<title>FutureLink-Protocol, Demo of Future Article linking to a PastLink</title>
-</head>
-<body>
-<?php echo $body;?>
+
+$ui = new FLP\UI($body);
+$ui->addPhrase($text);
+$body = $ui->render();
+?>
+<?php echo $body->text;?>
 </body>
 </html>

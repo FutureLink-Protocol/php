@@ -11,50 +11,34 @@ class Security
     public $verificationsCount = 0;
     public $metadata;
 
-    function verify(Contents &$contents, $item)
+    function verify(Pair $pair, Revision $revision)
     {
         if ($this->debug == true) {
             ini_set('error_reporting', E_ALL);
             ini_set('display_errors', 1);
         }
 
-        foreach ($item->feed->items as $i => $newItem) {
-            $verification = new Verification();
+	    $alreadyExists = false;
+	    Events::triggerFilterPreviouslyVerified($pair, $alreadyExists);
+	    $verification = new Verification();
 
-            //lets remove the new items if it has already been accepted in the past
-            foreach ($contents->items as &$existingItem) {
-                if (
-                    $existingItem->pastlink->text == $newItem->pastlink->text &&
-                    $existingItem->pastlink->href == $newItem->pastlink->href
-                ) {
-                    $verification->reason[] = 'exists';
-                    unset($item->feed->items[$i]);
-                }
-            }
+	    $this->verifications[] =& $verification;
+	    $this->verificationsCount++;
 
-            // This query will *ALWAYS* fail if the destination page had been created/edited *PRIOR* to applying the 'Simple Wiki Attributes' profile!
-            // Just recreate the destination page after having applied the profile in order to load it with the proper attributes.
-            // TODO: consider adding a test on query failure in order to determine whether:
-            //       1) the phrase isn't found, or
-            //       2) the Simple Wiki Attributes profile wasn't in place at page-creation
-            // ...then display a more meaningful error message
-            Events::triggerRevisionLookup(new Phraser\Phrase($newItem->futurelink->text), $revision = new Revision());
-
+	    if ($alreadyExists) {
+            $verification->reason[] = 'exists';
+	    } else {
             $verification->hashBy = Phraser\Parser::superSanitize(
-	            $newItem->futurelink->author .
-	            $newItem->futurelink->authorInstitution .
-	            $newItem->futurelink->authorProfession
+	            $pair->past->author .
+	            $pair->past->authorInstitution .
+	            $pair->past->authorProfession
             );
 
-            if ($revision->version == null) {
-                unset($item->feed->items[$i]);
-            }
-
             $verification->foundRevision = $revision;
-            $verification->metadataHere = $this->metadata->raw;
-            $verification->textThere = new Phraser\Phrase($newItem->futurelink->text);
+            $verification->metadataHere = $pair->past;
+            $verification->textThere = (new Phraser\Phrase($pair->past->text))->sanitized;
             $verification->hashHere = hash_hmac("md5", $verification->hashBy, $verification->textThere);
-            $verification->hashThere = $newItem->futurelink->hash;
+            $verification->hashThere = $pair->past->hash;
             $verification->exists = Phraser\Parser::hasPhrase(
                 $revision->data,
                 $verification->textThere
@@ -62,7 +46,6 @@ class Security
 
             if ($verification->hashHere != $verification->hashThere) {
                 $verification->reason[] = 'hash_tampering';
-                unset($item->feed->items[$i]);
             }
             /*
              * This does need added
@@ -77,25 +60,21 @@ class Security
                 } else {
                     $verification->reason[] = 'no_existence';
                 }
-
-                unset($item->feed->items[$i]);
             }
 
-            foreach ($newItem->futurelink as $key => $value) {
+            foreach ($pair->future as $key => $value) {
                 if (isset(MetadataAssembler::$acceptableKeys[$key]) && MetadataAssembler::$acceptableKeys[$key] == true) {
                     //all clear
                 } else {
                     $verification->reason[] = 'metadata_tampering' . ($this->debug == true ? $key : '');
-                    unset($item->feed->items[$i]);
                 }
             }
 
-            foreach ($newItem->pastlink as $key => $value) {
+            foreach ($pair->past as $key => $value) {
                 if (isset(MetadataAssembler::$acceptableKeys[$key]) && MetadataAssembler::$acceptableKeys[$key] == true) {
                     //all clear
                 } else {
                     $verification->reason[] = 'metadata_tampering' . ($this->debug == true ? $key : '');
-                    unset($item->feed->items[$i]);
                 }
             }
 
@@ -103,18 +82,9 @@ class Security
             $this->verificationsCount++;
         }
 
-        if (empty($item->feed->items) == false) {
+        if (empty($verification->reason)) {
             $this->itemsAdded = true;
-
-            foreach ($item->feed->items as &$items) {
-                Events::triggerAccepted('futureLink', $items->futurelink->text);
-            }
-
-            if (empty($contents->items) == true) {
-                $contents->items = array();
-            }
-
-            $contents->items = array_merge($contents->items, $item->feed->items);
+            Events::triggerAccepted($pair);
         }
     }
 } 

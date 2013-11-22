@@ -26,28 +26,37 @@ html
 
 contents
  : content
-	{$$ = $1;}
+	{
+		//js
+			$$ = $1;
+
+		//php $$ = $1->text;
+	}
  | contents content
 	{
-		$$ =  $1 + $2; //js
-		//php $$ = $1 . $2;
+		//js
+			$$ =  $1 + $2;
+		//php $$ = $1->text . $2->text;
 	}
  ;
 
 content
 	: TAG
 		{
-			$$ = Phraser.tagHandler($1);//js
+			//js
+				$$ = Phraser.tagHandler($1);
 			//php $$ = $this->tagHandler($1);
 		}
 	| WORD
 		{
-			$$ = Phraser.wordHandler($1);//js
+			//js
+				$$ = Phraser.wordHandler($1);
 			//php $$ = $this->wordHandler($1);
 		}
 	| CHAR
 		{
-			$$ = Phraser.charHandler($1);//js
+			//js
+				$$ = Phraser.charHandler($1);
 			//php $$ = $this->charHandler($1);
 		}
  ;

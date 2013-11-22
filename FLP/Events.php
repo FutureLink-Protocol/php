@@ -15,6 +15,7 @@ class Events
 	private static $RevisionLookup = array();
 	private static $Receive = array();
 	private static $Send = array();
+	private static $FilterPreviouslyVerified = array();
 
 	public static function bind(&$event)
 	{
@@ -23,11 +24,11 @@ class Events
 		Events::${$eventName}[] =& $event;
 	}
 
-    public static function triggerAccepted($name, Phraser\Phrase $text)
+    public static function triggerAccepted(Pair &$pair)
     {
         foreach(Events::$Accepted as &$event)
         {
-            $event->trigger($name, $text);
+            $event->trigger($pair);
         }
     }
 
@@ -65,17 +66,17 @@ class Events
 
 	public static function triggerFeedSave($name, $contents)
 	{
-		foreach(Events::$FeedLookup as &$event)
+		foreach(Events::$FeedSave as &$event)
 		{
 			$event->trigger($name, $contents);
 		}
 	}
 
-    public static function triggerRevisionLookup(Phraser\Phrase $text, Revision &$revision)
+    public static function triggerRevisionLookup(Phraser\Phrase $text, &$exists, Revision &$revision)
     {
         foreach(Events::$RevisionLookup as &$event)
         {
-            $event->trigger($text, $revision);
+            $event->trigger($text, $exists, $revision);
         }
     }
 
@@ -100,6 +101,14 @@ class Events
 		foreach(Events::$Send as &$event)
 		{
 			$event->trigger($pair);
+		}
+	}
+
+	public static function triggerFilterPreviouslyVerified(Pair &$pair, &$exists)
+	{
+		foreach(Events::$FilterPreviouslyVerified as &$event)
+		{
+			$event->trigger($pair, $exists);
 		}
 	}
 }

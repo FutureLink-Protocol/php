@@ -11,25 +11,34 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:return $$[$0-1];
 break;
-case 2:this.$ = $$[$0];
+case 2:
+		//js
+			this.$ = $$[$0];
+
+		//php this.$ = $$[$0]->text;
+	
 break;
 case 3:
-		this.$ =  $$[$0-1] + $$[$0]; //js
-		//php this.$ = $$[$0-1] . $$[$0];
+		//js
+			this.$ =  $$[$0-1] + $$[$0];
+		//php this.$ = $$[$0-1]->text . $$[$0]->text;
 	
 break;
 case 4:
-			this.$ = Phraser.tagHandler($$[$0]);//js
+			//js
+				this.$ = Phraser.tagHandler($$[$0]);
 			//php this.$ = this->tagHandler($$[$0]);
 		
 break;
 case 5:
-			this.$ = Phraser.wordHandler($$[$0]);//js
+			//js
+				this.$ = Phraser.wordHandler($$[$0]);
 			//php this.$ = this->wordHandler($$[$0]);
 		
 break;
 case 6:
-			this.$ = Phraser.charHandler($$[$0]);//js
+			//js
+				this.$ = Phraser.charHandler($$[$0]);
 			//php this.$ = this->charHandler($$[$0]);
 		
 break;

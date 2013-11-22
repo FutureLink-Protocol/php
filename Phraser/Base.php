@@ -1,24 +1,21 @@
 <?php
 namespace Phraser;
-// (c) Copyright 2002-2013 by authors of the Tiki Wiki CMS Groupware Project
-//
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// $Id: Handler.php 44444 2013-01-05 21:24:24Z changi67 $
 
-class Base
+abstract class Base
 {
-	var $chars = array();
-	var $words = array();
-	var $currentWord = -1;
-	var $wordsChars = array();
-	var $indexes = array();
-	var $parsed = '';
-	var $cache = array();
+	public $chars = array();
+	public $words = array();
+	public $currentWord = -1;
+	public $wordsChars = array();
+	public $locations = array();
+	public $parsed = '';
+	public $cache = array();
 
-	var $cssClassStart = '';
-	var $cssClassMiddle = '';
-	var $cssClassEnd = '';
+	public $cssClassStart = '';
+	public $cssClassMiddle = '';
+	public $cssClassEnd = '';
+
+	public abstract function parse($input);
 
 	function setCssWordClasses($classes = array())
 	{
@@ -38,31 +35,32 @@ class Base
 		return $this;
 	}
 
-	function tagHandler($tag)
+	function tagHandler(ParserValue $value)
 	{
-		return $tag;
+		return $value->text;
 	}
 
-	function wordHandler($word)
+	function wordHandler(ParserValue $value)
 	{
+		$word = $value->text;
 		$this->currentWord++;
 		$this->words[] = $word;
 
-		for ($i = 0, $end = count($this->indexes); $i < $end; $i++) {
-			if (empty($this->indexes[$i]['ended'])) {
-				if ($this->currentWord >= $this->indexes[$i]['start']
-						&& $this->currentWord <= $this->indexes[$i]['end']
+		for ($i = 0, $end = count($this->locations); $i < $end; $i++) {
+			if (empty($this->locations[$i]->ended)) {
+				if ($this->currentWord >= $this->locations[$i]->start
+						&& $this->currentWord <= $this->locations[$i]->end
 				) {
 					$word = '<span class="phrase phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $word . '</span>';
 				}
 
-				if ($this->currentWord == $this->indexes[$i]['start']) {
+				if ($this->currentWord == $this->locations[$i]->start) {
 					$word = '<span class="phraseStart phraseStart' . $i . (!empty($this->cssClassStart) ? ' '  . $this->cssClassStart . ' ' . $this->cssClassStart . $i : '') . '" style="border: none; font-weight: bold;"></span>' . $word;
 				}
 
-				if ($this->currentWord == $this->indexes[$i]['end']) {
+				if ($this->currentWord == $this->locations[$i]->end) {
 					if (empty($this->wordsChars[$this->currentWord])) {
-						$this->indexes[$i]['ended'] = true;
+						$this->locations[$i]->ended = true;
 						$word .= '<span class="phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '" style="border: none;"></span>';
 					} else {
 						$word = '<span class="phrase phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $word . '</span>';
@@ -74,8 +72,9 @@ class Base
 		return $word;
 	}
 
-	function charHandler($char)
+	function charHandler(ParserValue $value)
 	{
+		$char = $value->text;
 		if (empty($this->wordsChars[$this->currentWord])) $this->wordsChars[$this->currentWord] = "";
 
 		//this line attempts to solve some character translation problems
@@ -84,14 +83,14 @@ class Base
 		$this->wordsChars[$this->currentWord] .= $char;
 		$this->chars[] = $char;
 
-		for ($i = 0, $end = count($this->indexes); $i < $end; $i++) {
-			if (empty($this->indexes[$i]['ended'])) {
-				if ($this->currentWord >= $this->indexes[$i]['start']) {
+		for ($i = 0, $end = count($this->locations); $i < $end; $i++) {
+			if (empty($this->locations[$i]->ended)) {
+				if ($this->currentWord >= $this->locations[$i]->start) {
 					$char = '<span class="phrases phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $char . '</span>';
 
-					if ($this->currentWord == $this->indexes[$i]['end']) {
+					if ($this->currentWord == $this->locations[$i]->end) {
 						if (!empty($this->wordsChars[$this->currentWord])) {
-							$this->indexes[$i]['ended'] = true;
+							$this->locations[$i]->ended = true;
 							$char = $char . '<span class="phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '" style="border: none;"></span>';
 						}
 					}
@@ -112,7 +111,7 @@ class Base
 
 		$this->addIndexes($parentWords, $phraseWords);
 
-		if (count($this->indexes) > 1) {
+		if (count($this->locations) > 1) {
 			return false;
 		} else {
 			return true;
@@ -132,7 +131,7 @@ class Base
 			$phrasesWords[] = $phraseWords;
 		}
 
-		if (!empty($this->indexes)) {
+		if (!empty($this->locations)) {
 			$parent = $this->parse($parent);
 		}
 
@@ -141,7 +140,7 @@ class Base
 
 	function clearIndexes()
 	{
-		$this->indexes = array();
+		$this->locations = array();
 	}
 
 	function addIndexes($parentWords, $phraseWords)
@@ -160,9 +159,11 @@ class Base
 		for ($i = 0, $j = count($boundaries); $i < $j; $i++) {
 			$boundaryLength = substr_count($boundaries[$i], '|');
 
-			$this->indexes[] = array(
-					'start' => min(count($parentWords) - count($phraseWords), $boundaryLength),
-					'end' => min(count($parentWords), $boundaryLength + $phraseLength)
+			$this->locations[] = new PhraseLocation(
+				min(count($parentWords) - count($phraseWords), $boundaryLength),
+				min(count($parentWords), $boundaryLength + $phraseLength),
+				$phraseWords,
+				$parentWords
 			);
 
 			$i++;
@@ -171,8 +172,8 @@ class Base
 
 	static function hasPhrase($parent, $phrase)
 	{
-		$parent = self::sanitizeToWords(utf8_encode($parent));
-		$phrase = self::sanitizeToWords(utf8_encode($phrase));
+		$parent = self::sanitizeToWords($parent);
+		$phrase = self::sanitizeToWords($phrase);
 
 		$parent = implode('|', $parent);
 		$phrase = implode('|', $phrase);
@@ -184,6 +185,7 @@ class Base
 
 	static function sanitizeToWords($html)
 	{
+		$html = utf8_encode($html);
 		if (isset(self::$sanitizedWords[$html])) return self::$sanitizedWords[$html];
 
 		$sanitized = preg_replace('/<(.|\n)*?>/', ' ', $html);
@@ -198,6 +200,6 @@ class Base
 
 	static function superSanitize($html)
 	{
-		return utf8_encode(implode('', self::sanitizeToWords($html)));
+		return implode('', self::sanitizeToWords($html));
 	}
 }

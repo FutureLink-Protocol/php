@@ -3,23 +3,23 @@ namespace FLP;
 
 class Pair extends Feeder
 {
-    public $futurelink;
-    public $pastlink;
+    public $future;
+    public $past;
 
-    private $futureLinkRaw;
-    private $pastLinkRaw;
+    private $futureRaw;
+    private $pastRaw;
 
-    public function __construct(&$pastlink, &$futurelink)
+    public function __construct(&$past, &$future)
     {
-        $this->futureLinkRaw = $futurelink;
-        $this->pastLinkRaw = $pastlink;
+        $this->futureRaw = $future;
+        $this->pastRaw = $past;
 
-        $this->futurelink =& MetadataAssembler::fromJSONToMetaData($futurelink);
-        $this->pastlink =& MetadataAssembler::fromJSONToMetaData($pastlink);
+        $this->future =& MetadataAssembler::fromJSONToMetaData($future);
+        $this->past =& MetadataAssembler::fromJSONToMetaData($past);
     }
 
     public function raw()
     {
-        return $this->pastLinkRaw . $this->futureLinkRaw;
+        return $this->pastRaw . $this->futureRaw;
     }
 }

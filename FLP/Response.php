@@ -1,7 +1,7 @@
 <?php
 namespace FLP;
 
-Class ReceiveFromFuture extends Feeder
+Class Response extends Feeder
 {
 	public $name = "futurelink";
     public $version = 0.1;

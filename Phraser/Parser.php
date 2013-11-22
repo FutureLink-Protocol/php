@@ -215,22 +215,24 @@ class Parser extends Base
 switch ($yystate) {
 case 1:return $s[$o-1];
 break;
-case 2:$thisS = $s[$o];
+case 2:
+		 $thisS = $s[$o]->text;
+	
 break;
 case 3:
-		$thisS =  $s[$o-1] + $s[$o];  $thisS = $s[$o-1] . $s[$o];
+		 $thisS = $s[$o-1]->text . $s[$o]->text;
 	
 break;
 case 4:
-			$thisS = Phraser.tagHandler($s[$o]); $thisS = $this->tagHandler($s[$o]);
+			 $thisS = $this->tagHandler($s[$o]);
 		
 break;
 case 5:
-			$thisS = Phraser.wordHandler($s[$o]); $thisS = $this->wordHandler($s[$o]);
+			 $thisS = $this->wordHandler($s[$o]);
 		
 break;
 case 6:
-			$thisS = Phraser.charHandler($s[$o]); $thisS = $this->charHandler($s[$o]);
+			 $thisS = $this->charHandler($s[$o]);
 		
 break;
 }

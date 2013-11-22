@@ -4,13 +4,23 @@ require_once "rb.php";
 
 $debug = true;
 
-ob_start();
-
-FLP\Events::bind(new FLP\Event\RevisionLookup(function(Phraser\Phrase $text, FLP\Revision &$revision) {
-	if ($found = R::findOne('article', ' sanitized LIKE ? ', array( '%' . $text->sanitized . '%'))) {
-		throw new Exception("We found it!");
+FLP\Events::bind(new FLP\Event\RevisionLookup(function(Phraser\Phrase $text, &$exists, FLP\Revision &$revision) {
+	$found = R::findAll('article', ' sanitized LIKE ? ', array( '%' . $text->sanitized . '%'));
+	if ($found) {
+		$exists = true;
+		$revision->data = $text->sanitized;
 	}
 }));
+
+FLP\Events::bind(new FLP\Event\FilterPreviouslyVerified(function(FLP\Pair &$pair, &$exists) {
+	$exists = false;
+}));
+
+FLP\Events::bind(new FLP\Event\Accepted(function(FLP\Pair &$pair) {
+	$test = '';
+}));
+
+ob_start();
 
 if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_POST['metadata'])) {
 
@@ -18,25 +28,24 @@ if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_P
 	$metadata = json_decode($_POST['metadata']);
 
 	foreach($metadata->feed->items as $item) {
-		$pair = new FLP\Pair($item->pastlink, $item->futurelink);
+		$pair = new FLP\Pair($item->past, $item->future);
 
 		$pair->origin = (isset($_POST['REMOTE_ADDR']) ? $_POST['REMOTE_ADDR'] : '');
-		$receive = new FLP\ReceiveFromFuture();
-		$futureLink = new FLP\FutureLink('all');
+		$response = new FLP\Response();
+		$pairReceived = new FLP\PairReceived();
 
-		if ($futureLink->addItem($_POST['metadata']) == true) {
-			$receive->response = 'success';
+		if ($pairReceived->addItem($pair) == true) {
+			$response->response = 'success';
 		} else {
-			$receive->response = 'failure';
+			$response->response = 'failure';
 		}
 
-		$feed = $receive->feed($_SERVER['REQUEST_URI']);
+		$feed = $response->feed($_SERVER['REQUEST_URI']);
 
 		if (
-			$receive->response == 'failure' &&
-			$futureLink == true
+			$response->response == 'failure'
 		) {
-			$feed->reason = $futureLink->security->verifications;
+			$feed->reason = $pairReceived->security->verifications;
 		}
 
 		if ($debug) {

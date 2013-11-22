@@ -2,7 +2,7 @@
 namespace FLP;
 
 use Exception;
-// Purpose: Send a pastlink to a futurelink
+// Purpose: Send a past metadata to a future
 
 class SendToPast
 {
@@ -17,16 +17,16 @@ class SendToPast
 		//we send something only if we have something to send
 		if (empty(Pairs::$pairs) == false) {
 			foreach (Pairs::$pairs as &$pair) {
-				if (empty($pair->pastlink->href) || isset($sent[$pair->pastlink->hash])) {
+				if (empty($pair->past->href) || isset($sent[$pair->past->hash])) {
 					continue;
 				}
 
-				$sent[$pair->pastlink->hash] = true;
+				$sent[$pair->past->hash] = true;
                 try {
 	                $feed = $pair->feed($_SERVER['REQUEST_URI']);
 	                $feed->feed->items[] = $pair;
 	                $feedJson = json_encode($feed);
-                    Events::triggerSend($pair->pastlink->href, array(
+                    Events::triggerSend($pair->past->href, array(
                         'protocol'=> 'futurelink',
                         'metadata'=> $feedJson,
 	                    'continue'=> 'true'
@@ -39,7 +39,7 @@ class SendToPast
 		            if (!empty($resultJson->feed) && $resultJson->feed == "success") {
 			            Events::triggerSuccess($pair, Pairs::$pairs);
 		            }
-		            $items[$pair->pastlink->text] = $result;
+		            $items[$pair->past->text] = $result;
 
                 } catch(Exception $e) {
                     Throw new $e;

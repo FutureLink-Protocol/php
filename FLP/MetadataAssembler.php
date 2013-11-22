@@ -57,21 +57,21 @@ class MetadataAssembler
         return $me;
     }
 
-	static function pastLink($data)
+	static function past($data)
 	{
 		$me = new MetadataAssembler();
         $me->raw = new Metadata();
-        Events::triggerMetadataLookup('PastLink', $me->raw);
+        Events::triggerMetadataLookup('Past', $me->raw);
 		$me->raw->text = $data;
 
 		return $me;
 	}
 
-	static function futureLink()
+	static function future()
 	{
 		$me = new MetadataAssembler();
         $me->raw = new Metadata();
-        Events::triggerMetadataLookup('FutureLink', $me->raw);
+        Events::triggerMetadataLookup('Future', $me->raw);
 
 		return $me;
 	}
