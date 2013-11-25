@@ -14,14 +14,8 @@ class UI
 		$this->body = new Phraser\Phrase($body);
 	}
 
-	public function addPhrase($text)
-	{
-		$this->phrases[] = $phrase = new Phraser\Phrase($text);
-		$this->parser->addIndexes($this->body->words, $phrase->words);
-	}
-
 	public function render()
 	{
-		return $this->parser->parse($this->body->original);
+		return $this->parser->parse($this->body->original)->text;
 	}
 }

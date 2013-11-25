@@ -72,9 +72,7 @@ FLP\Pairs::add(new FLP\Pair($clipboarddata, $metadata));
 require_once("sender.php");
 
 $ui = new FLP\UI($body);
-$ui->addPhrase($text);
-$body = $ui->render();
-?>
-<?php echo $body->text;?>
+
+echo $ui->render(true);?>
 </body>
 </html>
