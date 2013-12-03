@@ -55,16 +55,16 @@ $metadata->text = $text;
 $msg = '';
 
 R::setup();
-$article = R::dispense('article');
+
 
 $foundArticle = R::find('article',' title = ? ', array($title));
 
 if (!$foundArticle) {
+    $article = R::dispense('article');
 	$article->title = $title;
 	$article->body = $body;
 	$article->sanitized = Phraser\Parser::superSanitize($body);
 	$article->metadata = json_encode($metadata);
-    $article->pair = null;
 	R::store($article);
 	$msg = 'Article Created';
 }

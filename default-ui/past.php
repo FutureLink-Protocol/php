@@ -43,20 +43,25 @@ Body;
 $msg = '';
 
 R::setup();
-$article = R::dispense('article');
 
 $foundArticle = R::find('article',' title = ? ', array($title));
 
 if (!$foundArticle) {
+    $article = R::dispense('article');
 	$article->title = $title;
 	$article->body = $body;
 	$article->sanitized = Phraser\Parser::superSanitize($body);
 	$article->metadata = $clipboarddata;
-    $article->pairs = null;
 	R::store($article);
 	$msg = 'Article Created';
 }
 
+$ui = new FLP\UI($body);
+$pairs = R::find('pair', ' title = ? ', array($title));
+foreach($pairs as $pair) {
+    $pairObject = json_decode($pair->pair);
+    $ui->addPhrase(new Phraser\Phrase($pairObject->past->text));
+}
 
 ?><!DOCTYPE html><html>
 <head>
@@ -97,7 +102,7 @@ if (!$foundArticle) {
 	</script>
 </head>
 <body>
-<?php echo $body;?>
+<?php echo $ui->render();?>
 <input type="button" id="button" value="Create PastLink"/>
 </body>
 </html>

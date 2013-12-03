@@ -37,12 +37,20 @@ if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_P
 		$pairReceived = new FLP\PairReceived();
 
 		if ($pairReceived->addItem($pair) == true) {
-            if ($foundArticle = R::findOne('article',' title = ? ', array($pairReceived->revision->name))) {
+            if ($foundPair = R::findOne('pair',' title = ? ', array($pairReceived->revision->name))) {
+                $response->response = 'exists';
+            } else {
+                try {
+                $articlePair = R::dispense('pair');
+                } catch (Exception $e) {
+                    echo $e;
+                }
+                $articlePair->title = $pairReceived->revision->name;
                 $pairAsJson = json_encode($pair);
-                $foundArticle->setAttr('pair', $pairAsJson);
-                R::store($foundArticle);
+                $articlePair->pair = $pairAsJson;
+                R::store($articlePair);
+			    $response->response = 'success';
             }
-			$response->response = 'success';
 		} else {
 			$response->response = 'failure';
 		}
