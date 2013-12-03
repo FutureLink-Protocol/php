@@ -11,6 +11,7 @@ use FLP\Event;
 Class PairReceived
 {
 	public $security;
+    public $revision;
 
 	function __construct()
 	{
@@ -25,12 +26,12 @@ Class PairReceived
 
 	function addItem(Pair $pair)
 	{
-		$revision = new Revision();
+		$this->revision = new Revision();
 		$exists = false;
-		Events::triggerRevisionLookup(new Phraser\Phrase($pair->past->text), $exists, $revision);
+		Events::triggerRevisionLookup(new Phraser\Phrase($pair->past->text), $exists, $this->revision);
 
 		if ($exists) {
-			$this->security->verify($pair, $revision);
+			$this->security->verify($pair, $this->revision);
 	        $existsCount = 0;
 			$verificationsCount = $this->security->verificationsCount;
 			foreach ($this->security->verifications as &$verification) {

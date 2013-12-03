@@ -3,13 +3,15 @@ require_once("../autoload.php");
 require_once "rb.php";
 
 $debug = true;
+R::setup();
 
 FLP\Events::bind(new FLP\Event\RevisionLookup(function(Phraser\Phrase $text, &$exists, FLP\Revision &$revision) {
-	$found = R::findAll('article', ' sanitized LIKE ? ', array( '%' . $text->sanitized . '%'));
-	if ($found) {
-		$exists = true;
-		$revision->data = $text->sanitized;
-	}
+    $found = R::findOne('article', ' sanitized LIKE ? ', array( '%' . $text->sanitized . '%'));
+    if ($found) {
+        $exists = true;
+        $revision->name = $found->title;
+        $revision->data = $text->sanitized;
+    }
 }));
 
 FLP\Events::bind(new FLP\Event\FilterPreviouslyVerified(function(FLP\Pair &$pair, &$exists) {
@@ -35,6 +37,11 @@ if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_P
 		$pairReceived = new FLP\PairReceived();
 
 		if ($pairReceived->addItem($pair) == true) {
+            if ($foundArticle = R::findOne('article',' title = ? ', array($pairReceived->revision->name))) {
+                $pairAsJson = json_encode($pair);
+                $foundArticle->setAttr('pair', $pairAsJson);
+                R::store($foundArticle);
+            }
 			$response->response = 'success';
 		} else {
 			$response->response = 'failure';

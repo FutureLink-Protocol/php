@@ -52,6 +52,7 @@ if (!$foundArticle) {
 	$article->body = $body;
 	$article->sanitized = Phraser\Parser::superSanitize($body);
 	$article->metadata = $clipboarddata;
+    $article->pairs = null;
 	R::store($article);
 	$msg = 'Article Created';
 }

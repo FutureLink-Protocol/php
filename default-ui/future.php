@@ -64,6 +64,7 @@ if (!$foundArticle) {
 	$article->body = $body;
 	$article->sanitized = Phraser\Parser::superSanitize($body);
 	$article->metadata = json_encode($metadata);
+    $article->pair = null;
 	R::store($article);
 	$msg = 'Article Created';
 }
