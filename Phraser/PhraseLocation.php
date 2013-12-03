@@ -11,7 +11,7 @@ namespace Phraser;
 
 class PhraseLocation
 {
-	public $start;
+	public $beginning;
 	public $end;
 	public $phraseWords;
 	public $parentWords;
@@ -20,9 +20,9 @@ class PhraseLocation
 
 	private static $phraseLocations = array();
 
-	public function __construct($start, $end, $phraseWords, $parentWords)
+	public function __construct($beginning, $end, $phraseWords, $parentWords)
 	{
-		$this->start = $start;
+		$this->beginning = $beginning;
 		$this->end = $end;
 
 		$this->phraseWords = $phraseWords;
@@ -32,7 +32,7 @@ class PhraseLocation
 
 		foreach(PhraseLocation::$phraseLocations as $location) {
 			if (
-				$location->start == $start
+				$location->beginning == $beginning
 				&& $location->end == $end
 				&& $location->phraseWords == $phraseWords
 				&& $location->parentWords == $parentWords

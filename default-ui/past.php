@@ -1,6 +1,7 @@
 <?php
 require_once "../autoload.php";
 require_once "rb.php";
+require_once "pairAssembler.php";
 
 $metadata = new FLP\Metadata();
 
@@ -58,9 +59,12 @@ if (!$foundArticle) {
 
 $ui = new FLP\UI($body);
 $pairs = R::find('pair', ' title = ? ', array($title));
+$json = array();
+
 foreach($pairs as $pair) {
-    $pairObject = json_decode($pair->pair);
-    $ui->addPhrase(new Phraser\Phrase($pairObject->past->text));
+    $existingPair = new pairAssembler($pair->pair);
+    $ui->addPhrase($existingPair->pastText);
+    $json[] = $existingPair;
 }
 
 ?><!DOCTYPE html><html>
@@ -72,6 +76,8 @@ foreach($pairs as $pair) {
 	<script src="../Phraser/rangy/rangy-textrange.js"></script>
 	<script src="../Phraser/rangy-phraser.js"></script>
 	<script>
+        var flpData = <?php echo json_encode($json);?>;
+        console.log(flpData);
 		$(function() {
 			$('#button').click(function() {
 				var text = rangy.getSelection().text(),
@@ -97,6 +103,24 @@ foreach($pairs as $pair) {
 				prompt('Here is your clipboard data', encodeURIComponent(JSON.stringify(clipboarddata)));
 				return false;
 			});
+
+            var phrases = $('span.phrases'),
+                FutureLink = function(beginning, middle, end) {
+                    var phrase = this.phrase = beginning.add(middle).add(end);
+                    this.beginning = beginning;
+                    this.middle = middle;
+                    this.end = end;
+
+                    phrase.css('background-color', 'yellow');
+                };
+
+            for(var i = 0; i <= <?php echo $ui->phraseIndex;?>; i++) {
+                new FutureLink(
+                    phrases.filter('span.phraseBeginning' + i),
+                    phrases.filter('span.phrase' + i),
+                    phrases.filter('span.phraseEnd' + i)
+                );
+            }
 		});
 
 	</script>

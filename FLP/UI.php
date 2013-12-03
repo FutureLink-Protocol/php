@@ -7,6 +7,7 @@ class UI
 {
 	public $parser;
 	public $body;
+    public $phraseIndex = -1;
 	public function __construct($body)
 	{
 		$this->parser = new Phraser\Parser();
@@ -16,6 +17,7 @@ class UI
     public function addPhrase(Phraser\Phrase $text)
     {
         $this->parser->addIndexes($this->body->words, $text->words);
+        $this->phraseIndex++;
     }
 
 	public function render()

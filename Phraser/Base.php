@@ -11,7 +11,7 @@ abstract class Base
 	public $parsed = '';
 	public $cache = array();
 
-	public $cssClassStart = '';
+	public $cssClassBeginning = '';
 	public $cssClassMiddle = '';
 	public $cssClassEnd = '';
 
@@ -21,14 +21,14 @@ abstract class Base
 	{
 		$classes = array_merge(
 			array(
-				'start' => '',
+				'beginning' => '',
 				'middle' => '',
 				'end' => ''
 			),
 			$classes
 		);
 
-		$this->cssClassStart = $classes['start'];
+		$this->cssClassBeginning = $classes['beginning'];
 		$this->cssClassMiddle = $classes['middle'];
 		$this->cssClassEnd = $classes['end'];
 
@@ -48,22 +48,22 @@ abstract class Base
 
 		for ($i = 0, $end = count($this->locations); $i < $end; $i++) {
 			if (empty($this->locations[$i]->ended)) {
-				if ($this->currentWord >= $this->locations[$i]->start
+				if ($this->currentWord >= $this->locations[$i]->beginning
 						&& $this->currentWord <= $this->locations[$i]->end
 				) {
-					$word = '<span class="phrase phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $word . '</span>';
+					$word = '<span class="phrases phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '">' . $word . '</span>';
 				}
 
-				if ($this->currentWord == $this->locations[$i]->start) {
-					$word = '<span class="phraseStart phraseStart' . $i . (!empty($this->cssClassStart) ? ' '  . $this->cssClassStart . ' ' . $this->cssClassStart . $i : '') . '" style="border: none; font-weight: bold;"></span>' . $word;
+				if ($this->currentWord == $this->locations[$i]->beginning) {
+					$word = '<span class="phrases phraseBeginning phraseBeginning' . $i . (!empty($this->cssClassBeginning) ? ' '  . $this->cssClassBeginning . ' ' . $this->cssClassBeginning . $i : '') . '"></span>' . $word;
 				}
 
 				if ($this->currentWord == $this->locations[$i]->end) {
 					if (empty($this->wordsChars[$this->currentWord])) {
 						$this->locations[$i]->ended = true;
-						$word .= '<span class="phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '" style="border: none;"></span>';
+						$word .= '<span class="phrases phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '"></span>';
 					} else {
-						$word = '<span class="phrase phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $word . '</span>';
+						$word = '<span class="phrases phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '">' . $word . '</span>';
 					}
 				}
 			}
@@ -85,13 +85,13 @@ abstract class Base
 
 		for ($i = 0, $end = count($this->locations); $i < $end; $i++) {
 			if (empty($this->locations[$i]->ended)) {
-				if ($this->currentWord >= $this->locations[$i]->start) {
-					$char = '<span class="phrases phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '" style="border: none;">' . $char . '</span>';
+				if ($this->currentWord >= $this->locations[$i]->beginning) {
+					$char = '<span class="phrases phrase' . $i . (!empty($this->cssClassMiddle) ? ' '  . $this->cssClassMiddle . ' ' . $this->cssClassMiddle . $i : '') . '">' . $char . '</span>';
 
 					if ($this->currentWord == $this->locations[$i]->end) {
 						if (!empty($this->wordsChars[$this->currentWord])) {
 							$this->locations[$i]->ended = true;
-							$char = $char . '<span class="phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '" style="border: none;"></span>';
+							$char = $char . '<span class="phrases phraseEnd phraseEnd' . $i . (!empty($this->cssClassEnd) ? ' '  . $this->cssClassEnd . ' ' . $this->cssClassEnd . $i : '') . '"></span>';
 						}
 					}
 				}
