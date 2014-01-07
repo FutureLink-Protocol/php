@@ -1,6 +1,10 @@
 <?php
 namespace FLP;
 
+/**
+ * Class Metadata
+ * @package FLP
+ */
 class Metadata
 {
     public $websiteTitle;

@@ -3,6 +3,10 @@ namespace FLP;
 
 use Phraser;
 
+/**
+ * Class MetadataAssembler
+ * @package FLP
+ */
 class MetadataAssembler
 {
 	static $acceptableKeys = array(
@@ -57,7 +61,11 @@ class MetadataAssembler
         return $me;
     }
 
-	static function past($data)
+    /**
+     * @param $data
+     * @return MetadataAssembler
+     */
+    static function past($data)
 	{
 		$me = new MetadataAssembler();
         $me->raw = new Metadata();
@@ -67,7 +75,10 @@ class MetadataAssembler
 		return $me;
 	}
 
-	static function future()
+    /**
+     * @return MetadataAssembler
+     */
+    static function future()
 	{
 		$me = new MetadataAssembler();
         $me->raw = new Metadata();

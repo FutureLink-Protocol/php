@@ -1,6 +1,10 @@
 <?php
 namespace FLP;
 
+/**
+ * Class Pair
+ * @package FLP
+ */
 class Pair extends Feeder
 {
     public $future;
@@ -9,6 +13,10 @@ class Pair extends Feeder
     private $futureRaw;
     private $pastRaw;
 
+    /**
+     * @param $past
+     * @param $future
+     */
     public function __construct(&$past, &$future)
     {
         $this->futureRaw = $future;
@@ -18,6 +26,9 @@ class Pair extends Feeder
         $this->past =& MetadataAssembler::fromJSONToMetaData($past);
     }
 
+    /**
+     * @return string
+     */
     public function raw()
     {
         return $this->pastRaw . $this->futureRaw;

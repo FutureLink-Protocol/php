@@ -8,7 +8,10 @@
 
 namespace FLP\Event;
 
-
+/**
+ * Class FeedSave
+ * @package FLP\Event
+ */
 class FeedSave extends Base
 {
 

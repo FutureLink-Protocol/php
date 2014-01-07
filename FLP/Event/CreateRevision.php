@@ -8,7 +8,10 @@
 
 namespace FLP\Event;
 
-
+/**
+ * Class CreateRevision
+ * @package FLP\Event
+ */
 class CreateRevision {
 
 } 

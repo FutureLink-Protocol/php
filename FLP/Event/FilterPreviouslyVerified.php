@@ -10,9 +10,17 @@ namespace FLP\Event;
 
 use FLP\Pair;
 
+/**
+ * Class FilterPreviouslyVerified
+ * @package FLP\Event
+ */
 class FilterPreviouslyVerified extends Base
 {
-	public function trigger(Pair &$pair, &$exists)
+    /**
+     * @param Pair $pair
+     * @param Boolean $exists
+     */
+    public function trigger(Pair &$pair, &$exists)
 	{
 		foreach($this->delegates as &$delegate)
 		{

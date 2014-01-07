@@ -3,6 +3,10 @@ namespace FLP;
 
 use Phraser;
 
+/**
+ * Class Events
+ * @package FLP
+ */
 class Events
 {
 	//possible events, I hate to re-declare all of them, but it is strongly typed, what can you say
@@ -17,13 +21,19 @@ class Events
 	private static $Send = array();
 	private static $FilterPreviouslyVerified = array();
 
-	public static function bind(&$event)
+    /**
+     * @param String $event
+     */
+    public static function bind(&$event)
 	{
 		//reduce to fully qualified class name, then remove WikiLingoEvent from front
         $eventName = substr(str_replace("\\", "", get_class($event)), 8);
 		Events::${$eventName}[] =& $event;
 	}
 
+    /**
+     * @param Pair $pair
+     */
     public static function triggerAccepted(Pair &$pair)
     {
         foreach(Events::$Accepted as &$event)
@@ -32,6 +42,11 @@ class Events
         }
     }
 
+    /**
+     * @param String $page
+     * @param String $body
+     * @param String $version
+     */
     public static function triggerCreateRevision($page, $body, $version)
     {
         foreach(Events::$CreateRevision as &$event)
@@ -40,6 +55,10 @@ class Events
         }
     }
 
+    /**
+     * @param $linkType
+     * @param $value
+     */
     public static function triggerMetadataLookup($linkType, &$value)
     {
         foreach(Events::$MetadataLookup as &$event)
@@ -48,6 +67,10 @@ class Events
         }
     }
 
+    /**
+     * @param $item
+     * @param $value
+     */
     public static function triggerMetadataSet($item, &$value)
     {
         foreach(Events::$MetaSet as &$event)
@@ -56,7 +79,10 @@ class Events
         }
     }
 
-	public static function triggerFeedLookup($name)
+    /**
+     * @param $name
+     */
+    public static function triggerFeedLookup($name)
 	{
 		foreach(Events::$FeedLookup as &$event)
 		{
@@ -64,7 +90,12 @@ class Events
 		}
 	}
 
-	public static function triggerFeedSave($name, $contents)
+    /**
+     * @param $name
+     * @param $contents
+     * @param $contents
+     */
+    public static function triggerFeedSave($name, $contents)
 	{
 		foreach(Events::$FeedSave as &$event)
 		{
@@ -72,6 +103,11 @@ class Events
 		}
 	}
 
+    /**
+     * @param Phraser\Phrase $text
+     * @param $exists
+     * @param Revision $revision
+     */
     public static function triggerRevisionLookup(Phraser\Phrase $text, &$exists, Revision &$revision)
     {
         foreach(Events::$RevisionLookup as &$event)
@@ -80,6 +116,13 @@ class Events
         }
     }
 
+    /**
+     * @param $url
+     * @param $params
+     * @param $result
+     * @param $data
+     * @param $items
+     */
     public static function triggerReceive($url, $params, &$result, &$data, &$items)
     {
         foreach(Events::$Receive as &$event)
@@ -88,6 +131,13 @@ class Events
         }
     }
 
+    /**
+     * @param $url
+     * @param $params
+     * @param $result
+     * @param $data
+     * @param $items
+     */
     public static function triggerSend($url, $params, &$result, &$data, &$items)
     {
         foreach(Events::$Send as &$event)
@@ -96,7 +146,10 @@ class Events
         }
     }
 
-	public static function triggerSuccess(Pair &$pair)
+    /**
+     * @param Pair $pair
+     */
+    public static function triggerSuccess(Pair &$pair)
 	{
 		foreach(Events::$Send as &$event)
 		{
@@ -104,7 +157,11 @@ class Events
 		}
 	}
 
-	public static function triggerFilterPreviouslyVerified(Pair &$pair, &$exists)
+    /**
+     * @param Pair $pair
+     * @param $exists
+     */
+    public static function triggerFilterPreviouslyVerified(Pair &$pair, &$exists)
 	{
 		foreach(Events::$FilterPreviouslyVerified as &$event)
 		{

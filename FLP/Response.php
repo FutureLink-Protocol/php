@@ -1,6 +1,10 @@
 <?php
 namespace FLP;
 
+/**
+ * Class Response
+ * @package FLP
+ */
 Class Response extends Feeder
 {
 	public $name = "futurelink";
@@ -9,8 +13,10 @@ Class Response extends Feeder
     public $response = 'failure';
 	public $reason;
 
-
-	public function getContents()
+    /**
+     * @return string
+     */
+    public function getContents()
 	{
 		$this->setEncoding($this->response);
 		return $this->response;

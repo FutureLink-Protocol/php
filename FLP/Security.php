@@ -3,6 +3,10 @@ namespace FLP;
 
 use Phraser;
 
+/**
+ * Class Security
+ * @package FLP
+ */
 class Security
 {
     public $debug = false;
@@ -11,6 +15,10 @@ class Security
     public $verificationsCount = 0;
     public $metadata;
 
+    /**
+     * @param Pair $pair
+     * @param Revision $revision
+     */
     function verify(Pair $pair, Revision $revision)
     {
         if ($this->debug == true) {

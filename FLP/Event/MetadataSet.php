@@ -8,9 +8,17 @@
 
 namespace FLP\Event;
 
-
+/**
+ * Class MetadataSet
+ * @package FLP\Event
+ */
 class MetadataSet extends Base
 {
+    /**
+     * @param String $objectName
+     * @param $item
+     * @param $value
+     */
     public function trigger($objectName, $item, &$value)
     {
         foreach($this->delegates as &$delegate)

@@ -1,7 +1,10 @@
 <?php
 namespace FLP;
 
-
+/**
+ * Class Verification
+ * @package FLP
+ */
 class Verification
 {
     public $reason = array();

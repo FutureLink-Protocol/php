@@ -2,6 +2,10 @@
 
 namespace FLP;
 
+/**
+ * Class Feed
+ * @package FLP
+ */
 class Feed
 {
     public $version;
@@ -10,6 +14,13 @@ class Feed
 	public $origin;
 	public $response;
 
+    /**
+     * @param $version
+     * @param $encoding
+     * @param Contents $feed
+     * @param $origin
+     * @param $response
+     */
     public function __construct($version, $encoding, Contents $feed, $origin, $response)
     {
         $this->version = $version;

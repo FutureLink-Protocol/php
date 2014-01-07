@@ -1,7 +1,10 @@
 <?php
 namespace FLP;
 
-
+/**
+ * Class Revision
+ * @package FLP
+ */
 class Revision
 {
     public $name;
@@ -10,6 +13,13 @@ class Revision
     public $date;
     public $phrase;
 
+    /**
+     * @param String [$name]
+     * @param String [$version]
+     * @param array [$data]
+     * @param Integer [$date]
+     * @param String [$phrase]
+     */
     public function __construct($name = null, $version = null, $data = null, $date = null, $phrase = null)
     {
         $this->name = $name;

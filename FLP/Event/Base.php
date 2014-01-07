@@ -1,24 +1,40 @@
 <?php
 namespace FLP\Event;
 
-
+/**
+ * Class Base
+ * @package FLP\Event
+ */
 class Base
 {
-	public $delegates = array();
+    /**
+     * @var array(function)
+     */
+    public $delegates = array();
 
-	public function __construct($delegate = null)
+    /**
+     * @param function [$delegate]
+     */
+    public function __construct($delegate = null)
 	{
 		if ($delegate != null)
 		{
 			$this->delegates[] =& $delegate;
 		}
 	}
-	public function bind($delegate)
+
+    /**
+     * @param function [$delegate]
+     */
+    public function bind($delegate)
 	{
 		$this->delegates[] =& $delegate;
 	}
 
-	public function trigger(&$object)
+    /**
+     * @param mixed $object
+     */
+    public function trigger(&$object)
 	{
 		foreach($this->delegates as &$delegate)
 		{

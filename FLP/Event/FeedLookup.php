@@ -8,7 +8,10 @@
 
 namespace FLP\Event;
 
-
+/**
+ * Class FeedLookup
+ * @package FLP\Event
+ */
 class FeedLookup extends Base
 {
 

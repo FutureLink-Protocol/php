@@ -2,13 +2,21 @@
 namespace FLP;
 
 use Exception;
-// Purpose: Send a past metadata to a future
+
+/**
+ * Class SendToPast
+ * @package FLP
+ */
 
 class SendToPast
 {
 	public static $version = 0.1;
 
-	public static function send()
+    /**
+     * @return array|null
+     * @throws Exception
+     */
+    public static function send()
 	{
 		$sent = array();
         $result = '';

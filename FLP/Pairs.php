@@ -1,12 +1,19 @@
 <?php
 namespace FLP;
 
+/**
+ * Class Pairs
+ * @package FLP
+ */
 class Pairs extends Feeder
 {
     public static $length = 0;
 	public static $pairs = array();
 	public static $addedHashes;
 
+    /**
+     * @return string
+     */
     public static function raw()
     {
         $raw = '';
@@ -17,7 +24,11 @@ class Pairs extends Feeder
         return $raw;
     }
 
-	static function add(Pair &$pair)
+    /**
+     * @param Pair $pair
+     * @return int|null
+     */
+    static function add(Pair &$pair)
 	{
 		Pairs::$pairs[] = $pair;
 		Pairs::$length++;
@@ -36,7 +47,11 @@ class Pairs extends Feeder
 		return Pairs::$length;
 	}
 
-	public function feed($origin)
+    /**
+     * @param $origin
+     * @return Feed
+     */
+    public function feed($origin)
 	{
 		$this->contents = new Contents();
 		foreach (Pairs::$pairs as $pair) {

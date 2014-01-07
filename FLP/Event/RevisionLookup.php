@@ -11,9 +11,18 @@ namespace FLP\Event;
 use FLP\Revision;
 use Phraser\Phrase;
 
+/**
+ * Class RevisionLookup
+ * @package FLP\Event
+ */
 class RevisionLookup extends Base
 {
-	public function trigger(Phrase &$text, &$exists, Revision &$revision)
+    /**
+     * @param Phrase $text
+     * @param Boolean $exists
+     * @param Revision $revision
+     */
+    public function trigger(Phrase &$text, &$exists, Revision &$revision)
 	{
 		foreach($this->delegates as &$delegate)
 		{

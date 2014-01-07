@@ -1,30 +1,42 @@
 <?php
 namespace FLP;
-// Programmer: Robert Plummer
-//
-// Purpose: Inject FutureLink UI components into Wiki editing screens.  Managed page's saved attributes per
-//          FutureLink UI interaction.  Generates and presents FutureLink text string to user.
 
 use Phraser;
 use FLP\Event;
 
+/**
+ * Class PairReceived
+ * @package FLP
+ */
 Class PairReceived
 {
 	public $security;
     public $revision;
 
-	function __construct()
+    /**
+     *
+     */
+    function __construct()
 	{
 		$this->security = new Security();
 	}
 
-	static function save($name, $body, $version)
+    /**
+     * @param $name
+     * @param $body
+     * @param $version
+     */
+    static function save($name, $body, $version)
 	{
 		$body = Phraser\Parser::superSanitize($body);
         Events::triggerCreateRevision($name, $body, $version);
 	}
 
-	function addItem(Pair $pair)
+    /**
+     * @param Pair $pair
+     * @return bool
+     */
+    function addItem(Pair $pair)
 	{
 		$this->revision = new Revision();
 		$exists = false;

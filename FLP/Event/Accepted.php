@@ -10,10 +10,16 @@ namespace FLP\Event;
 
 use FLP\Pair;
 
-
+/**
+ * Class Accepted
+ * @package FLP\Event
+ */
 class Accepted extends Base
 {
-	public function trigger(Pair &$pair)
+    /**
+     * @param Pair $pair
+     */
+    public function trigger(Pair &$pair)
 	{
 		foreach($this->delegates as &$delegate)
 		{

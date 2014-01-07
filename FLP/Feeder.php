@@ -3,6 +3,10 @@ namespace FLP;
 
 use Exception;
 
+/**
+ * Class Feeder
+ * @package FLP
+ */
 abstract class Feeder
 {
 	public $contents = null;
@@ -11,7 +15,10 @@ abstract class Feeder
 	public $encoding = "";
 	public $response;
 
-	function __construct()
+    /**
+     *
+     */
+    function __construct()
 	{
 		$this->open();
 		if (!isset($this->contents)) {
@@ -21,18 +28,27 @@ abstract class Feeder
 		}
 	}
 
-	public function replace()
+    /**
+     *
+     */
+    public function replace()
 	{
 
 	}
 
-	public function setEncoding()
+    /**
+     * @throws \Exception
+     */
+    public function setEncoding()
 	{
 		if (is_array($this->contentsRaw)) throw new Exception('die');
 		$this->encoding = mb_detect_encoding($this->contentsRaw, "ASCII, UTF-8, ISO-8859-1");
 	}
 
-	private function open()
+    /**
+     *
+     */
+    private function open()
 	{
 		Events::triggerFeedLookup($this->contentsRaw);
 
@@ -41,7 +57,10 @@ abstract class Feeder
 		$this->contents = json_decode($this->contentsRaw);
 	}
 
-	private function save()
+    /**
+     * @return $this
+     */
+    private function save()
 	{
 		$contents = json_encode($this->contents);
 
@@ -50,7 +69,10 @@ abstract class Feeder
 		return $this;
 	}
 
-	function appendToContents($items)
+    /**
+     * @param $items
+     */
+    function appendToContents($items)
 	{
 		if (isset($items->feed->entry)) {
 			$this->contents->items[] = $items->feed->item;
@@ -59,7 +81,11 @@ abstract class Feeder
 		}
 	}
 
-	public function addItem($item)
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function addItem($item)
 	{
 		$this->appendToContents($item);
 
@@ -68,7 +94,11 @@ abstract class Feeder
 		return $this;
 	}
 
-	public function feed($origin)
+    /**
+     * @param $origin
+     * @return Feed
+     */
+    public function feed($origin)
 	{
 		$feed = new Feed(
 			$this->version,
