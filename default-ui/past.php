@@ -75,6 +75,7 @@ foreach($pairs as $pair) {
 	<script src="../Phraser/rangy/rangy-core.js"></script>
 	<script src="../Phraser/rangy/rangy-textrange.js"></script>
 	<script src="../Phraser/rangy-phraser.js"></script>
+	<script src="FutureLink.js"></script>
 	<script>
         var flpData = <?php echo json_encode($json);?>;
         console.log(flpData);
@@ -104,15 +105,7 @@ foreach($pairs as $pair) {
 				return false;
 			});
 
-            var phrases = $('span.phrases'),
-                FutureLink = function(beginning, middle, end) {
-                    var phrase = this.phrase = beginning.add(middle).add(end);
-                    this.beginning = beginning;
-                    this.middle = middle;
-                    this.end = end;
-
-                    phrase.css('background-color', 'yellow');
-                };
+            var phrases = $('span.phrases');
 
             for(var i = 0; i <= <?php echo $ui->phraseIndex;?>; i++) {
                 new FutureLink(
