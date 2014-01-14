@@ -9,15 +9,14 @@ namespace FLP\Event;
 class MetadataLookup extends Base
 {
     /**
-     * @param String $objectName
-     * @param $item
+     * @param $linkType
      * @param $value
      */
-    public function trigger($objectName, $item, &$value)
+    public function trigger($linkType, &$value)
     {
         foreach($this->delegates as &$delegate)
         {
-            $delegate($objectName, $item, $value);
+            $delegate($linkType, $value);
         }
     }
 } 
