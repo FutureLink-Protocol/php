@@ -1,0 +1,8 @@
+{
+    "name": "FLP/FLP",
+    "description": "FutureLink-Protocol implementation in PHP",
+    "homepage": "https://github.com/FutureLink-Protocol"
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
