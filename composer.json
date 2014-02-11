@@ -7,7 +7,7 @@
      },
      "autoload": {
          "psr-0": {
-             "FLP": "flp/flp/FLP"
+             "FLP": "FLP"
          }
      }
  }
