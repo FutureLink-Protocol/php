@@ -1,5 +1,5 @@
 {
-     "name": "FLP/FLP",
+     "name": "flp/flp",
      "description": "FutureLink-Protocol implementation in PHP",
      "homepage": "https://github.com/FutureLink-Protocol",
      "require": {
