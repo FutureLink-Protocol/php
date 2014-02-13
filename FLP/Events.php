@@ -142,7 +142,9 @@ class Events
     {
         foreach(Events::$Send as &$event)
         {
-            $event->trigger($url, $params, $result, $data, $items);
+            //$event->trigger($url, $params, $result, $data, $items);
+            $communicator = new Communicator($url, $params);
+            $result = $communicator->result;
         }
     }
 

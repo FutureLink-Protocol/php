@@ -19,7 +19,7 @@ class SendToPast
     public static function send()
 	{
 		$sent = array();
-        $result = '';
+        $result = array();
 
 		$items = array();
 		//we send something only if we have something to send
