@@ -75,8 +75,8 @@ foreach($pairs as $pair) {
 	<script src="../Phraser/rangy/rangy-core.js"></script>
 	<script src="../Phraser/rangy/rangy-textrange.js"></script>
 	<script src="../Phraser/rangy-phraser.js"></script>
-	<script src="FutureLink.js"></script>
-	<script src="PastLink.js"></script>
+	<script src="../scripts/FutureLink.js"></script>
+	<script src="../scripts/PastLink.js"></script>
 	<script>
         var flpData = <?php echo json_encode($json);?>,
             incompleteData = <?php echo $data ?>;

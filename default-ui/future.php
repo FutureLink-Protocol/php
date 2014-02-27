@@ -79,7 +79,7 @@ $ui->addPhrase(new Phraser\Phrase($text));
 echo $ui->render();?>
 </body>
 <script src="../jquery-1.10.2.min.js"></script>
-<script src="FutureLink.js"></script>
+<script src="../scripts/FutureLink.js"></script>
 <script>
     var phrases = $('span.phrases');
 
