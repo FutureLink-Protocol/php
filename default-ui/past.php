@@ -28,7 +28,7 @@ $metadata->websiteTitle = "FutureLink-Protocol Demo";
 $metadata->websiteSubtitle = "In php";
 
 
-$clipboarddata = json_encode($metadata);
+$data = json_encode($metadata);
 $title = 'The FutureLink-Protocol';
 $body = <<<Body
 <p>We want to take the present-day web-functionality of "link" and "backlink" and enhance it for use by scholars. So when we talk of an "enhanced Link" we'll call it a "PastLink", and an "enhanced Backlink" will be called a "FutureLink".</p>
@@ -52,7 +52,7 @@ if (!$foundArticle) {
 	$article->title = $title;
 	$article->body = $body;
 	$article->sanitized = Phraser\Parser::superSanitize($body);
-	$article->metadata = $clipboarddata;
+	$article->metadata = $data;
 	R::store($article);
 	$msg = 'Article Created';
 }
@@ -76,32 +76,21 @@ foreach($pairs as $pair) {
 	<script src="../Phraser/rangy/rangy-textrange.js"></script>
 	<script src="../Phraser/rangy-phraser.js"></script>
 	<script src="FutureLink.js"></script>
+	<script src="PastLink.js"></script>
 	<script>
-        var flpData = <?php echo json_encode($json);?>;
-        console.log(flpData);
+        var flpData = <?php echo json_encode($json);?>,
+            incompleteData = <?php echo $data ?>;
+
 		$(function() {
 			$('#button').click(function() {
-				var text = rangy.getSelection().text(),
-					clipboarddata = JSON.parse('<?php echo $clipboarddata ?>');
+                var pastLink = new PastLink(incompleteData);
 
-				clipboarddata.href = document.location;
-				clipboarddata.text = text;
-				clipboarddata.hash = md5(
-					rangy.superSanitize(
-						clipboarddata.author +
-							clipboarddata.authorInstitution +
-							clipboarddata.authorProfession
-					)
-					,
-					rangy.superSanitize(clipboarddata.text)
-				);
+                console.log(pastLink);
 
-				clipboarddata.href = clipboarddata.href.toString();
-
-				console.log(clipboarddata);
-				console.log(JSON.stringify(clipboarddata));
-
-				prompt('Here is your clipboard data', encodeURIComponent(JSON.stringify(clipboarddata)));
+				prompt(
+                    'Here is your clipboard data',
+                    pastLink.toClipBoardData()
+                );
 				return false;
 			});
 
