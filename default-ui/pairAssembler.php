@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: robert
- * Date: 12/3/13
- * Time: 2:17 PM
- */
 
 class pairAssembler
 {

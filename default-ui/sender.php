@@ -1,5 +1,5 @@
 <?php
-require_once("../autoload.php");
+require_once("../vendor/autoload.php");
 $_POST['continue'] = false;
 $debug = true;
 
