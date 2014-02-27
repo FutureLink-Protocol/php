@@ -4,21 +4,20 @@
      "homepage": "https://github.com/FutureLink-Protocol",
      "authors": [
          {
-         "name": "Robert Plummer",
-         "email": "rplummer@visop-dev.com",
-         "homepage": "http://visop-dev.com",
-         "role": "Lead Developer"
+             "name": "Robert Plummer",
+             "email": "rplummer@visop-dev.com",
+             "homepage": "http://visop-dev.com",
+             "role": "Lead Developer"
          },
          {
-         "name": "Luke Gerhardt",
-         "email": "luke@totaldigitalconsulting.com",
-         "homepage": "http://totaldigitalconsulting.com",
-         "role": "Developer"
+             "name": "Luke Gerhardt",
+             "email": "luke@totaldigitalconsulting.com",
+             "homepage": "http://totaldigitalconsulting.com",
+             "role": "Developer"
          }
      ],
      "require": {
-         "php": ">=5.4.0",
-         "wikilingo/wikilingo": "dev-master"
+         "php": ">=5.4.0"
      },
      "autoload": {
          "psr-0": {
