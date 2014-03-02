@@ -16,7 +16,6 @@ class Events
 	private static $MetaSet = array();
 	private static $FeedLookup = array();
 	private static $FeedSave = array();
-	private static $RevisionLookup = array();
 	private static $Receive = array();
 	private static $Send = array();
 	private static $FilterPreviouslyVerified = array();
@@ -102,19 +101,6 @@ class Events
 			$event->trigger($name, $contents);
 		}
 	}
-
-    /**
-     * @param Phraser\Phrase $text
-     * @param $exists
-     * @param Revision $revision
-     */
-    public static function triggerRevisionLookup(Phraser\Phrase $text, &$exists, Revision &$revision)
-    {
-        foreach(Events::$RevisionLookup as &$event)
-        {
-            $event->trigger($text, $exists, $revision);
-        }
-    }
 
     /**
      * @param $url

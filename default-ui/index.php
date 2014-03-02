@@ -1,9 +1,7 @@
 <?php
-require_once "receiver.php";
-require_once "sender.php";
-require_once "rb.php";
-R::setup();
+require_once("../vendor/autoload.php");
+require_once("receiver.php");
+
 if (isset($_REQUEST['reset'])) {
-    R::wipe( 'article' );
-    R::wipe( 'pair' );
+	FLP\Data::wipe();
 }

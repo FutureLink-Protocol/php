@@ -34,4 +34,14 @@ class Communicator
         $this->result = curl_exec($ch);
         $this->info = curl_getinfo($ch);
     }
+
+	public function json()
+	{
+		$json = json_decode($this->result);
+		if ($json != null) {
+			$json->info = $this->info;
+		}
+
+		return $json;
+	}
 } 

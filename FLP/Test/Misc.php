@@ -12,6 +12,8 @@ class Misc
 
 	public function __construct($directoryName)
 	{
+		global $unitTestsRunning;
+		$unitTestsRunning = true;
 		$this->directoryName = $directoryName;
 		$this->directory = dirname(__FILE__) . '/' . $directoryName;
 		$this->files = scandir($this->directory);

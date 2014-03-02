@@ -10,7 +10,7 @@ use Phraser;
 class Security
 {
     public $debug = false;
-    public $itemsAdded = false;
+    public $added = false;
     public $verifications = array();
     public $verificationsCount = 0;
     public $metadata;
@@ -26,16 +26,16 @@ class Security
             ini_set('display_errors', 1);
         }
 
-	    $alreadyExists = false;
-	    Events::triggerFilterPreviouslyVerified($pair, $alreadyExists);
 	    $verification = new Verification();
 
 	    $this->verifications[] =& $verification;
 	    $this->verificationsCount++;
 
-	    if ($alreadyExists) {
+	    if (Data::getPair($pair)) {
             $verification->reason[] = 'exists';
 	    } else {
+		    Data::createPair($revision->title, $pair);
+
             $verification->hashBy = Phraser\Parser::superSanitize(
 	            $pair->past->author .
 	            $pair->past->authorInstitution .
@@ -91,7 +91,7 @@ class Security
         }
 
         if (empty($verification->reason)) {
-            $this->itemsAdded = true;
+            $this->added = true;
             Events::triggerAccepted($pair);
         }
     }

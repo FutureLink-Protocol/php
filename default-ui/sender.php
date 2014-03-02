@@ -14,15 +14,10 @@ FLP\Events::bind(new FLP\Event\Send(function($url, $params, &$result, &$item, &$
 		print_r($result);
 	} else {
         $communicator = new FLP\Communicator($url, $params);
-        $result = $communicator->result;
-        $json = json_decode($result);
-        if ($json != null) {
-            $json->info = $communicator->info;
-        }
 
 		if ($debug) {
-			if ($json == null) {
-				echo str_replace('\/', '/', $result);
+			if (($json = $communicator->json()) == null) {
+				echo str_replace('\/', '/', $communicator->result);
 			} else {
 				echo $json->debug;
 			}

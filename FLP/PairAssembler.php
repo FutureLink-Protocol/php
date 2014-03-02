@@ -1,6 +1,9 @@
 <?php
+namespace FLP;
 
-class pairAssembler
+use Phraser;
+
+class PairAssembler
 {
     public $pair;
     public $pastText;
@@ -11,7 +14,7 @@ class pairAssembler
     {
         $json = json_decode($raw);
 
-        $this->pair = new FLP\Pair($json->past, $json->future);
+        $this->pair = new Pair($json->past, $json->future);
 
         $this->pastText = new Phraser\Phrase($this->pair->past->text);
         $this->futureText = new Phraser\Phrase($this->pair->future->text);

@@ -1,26 +1,8 @@
 <?php
 require_once("../vendor/autoload.php");
-require_once "rb.php";
 
 $debug = true;
-R::setup();
-
-FLP\Events::bind(new FLP\Event\RevisionLookup(function(Phraser\Phrase $text, &$exists, FLP\Revision &$revision) {
-    $found = R::findOne('article', ' sanitized LIKE ? ', array( '%' . $text->sanitized . '%'));
-    if ($found) {
-        $exists = true;
-        $revision->name = $found->title;
-        $revision->data = $text->sanitized;
-    }
-}));
-
-FLP\Events::bind(new FLP\Event\FilterPreviouslyVerified(function(FLP\Pair &$pair, &$exists) {
-	$exists = false;
-}));
-
-FLP\Events::bind(new FLP\Event\Accepted(function(FLP\Pair &$pair) {
-	$test = '';
-}));
+$data = new FLP\Data();
 
 ob_start();
 
@@ -36,22 +18,21 @@ if (isset($_POST['protocol']) && $_POST['protocol'] == 'futurelink' && isset($_P
 		$response = new FLP\Response();
 		$pairReceived = new FLP\PairReceived();
 
-		if ($pairReceived->addItem($pair) == true) {
-            if ($foundPair = R::findOne('pair',' title = ? ', array($pairReceived->revision->name))) {
-                $response->response = 'exists';
-            } else {
-                try {
-                $articlePair = R::dispense('pair');
-                } catch (Exception $e) {
-                    echo $e;
-                }
-                $articlePair->title = $pairReceived->revision->name;
-                $pairAsJson = json_encode($pair);
-                $articlePair->pair = $pairAsJson;
-                R::store($articlePair);
-			    $response->response = 'success';
-            }
-		} else {
+		//addItem = false if the item exists in the system, but isn't new, it is true, when it is new, and it is null in any other case
+		$added = $pairReceived->addItem($pair);
+
+		//new
+		if ($added == true) {
+			$response->response = 'success';
+		}
+
+		//already exists
+		else if ($added == false) {
+			$response->response = 'exists';
+		}
+
+		//doesn't exist
+		else {
 			$response->response = 'failure';
 		}
 

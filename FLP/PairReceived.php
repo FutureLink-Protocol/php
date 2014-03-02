@@ -10,6 +10,9 @@ use FLP\Event;
  */
 Class PairReceived
 {
+	/**
+	 * @var Security
+	 */
 	public $security;
     public $revision;
 
@@ -38,12 +41,17 @@ Class PairReceived
      */
     function addItem(Pair $pair)
 	{
-		$this->revision = new Revision();
-		$exists = false;
-		Events::triggerRevisionLookup(new Phraser\Phrase($pair->past->text), $exists, $this->revision);
+		$revision = $this->revision = Data::getRevision($pair);
+		$alreadyAddedPair = Data::getPair($pair);
 
-		if ($exists) {
-			$this->security->verify($pair, $this->revision);
+		//don't let it be added if it already exists
+		if ($alreadyAddedPair != null) {
+			return false;
+		}
+
+		//add if if it doesn't exist
+		else if ($revision != null) {
+			$this->security->verify($pair, $revision);
 	        $existsCount = 0;
 			$verificationsCount = $this->security->verificationsCount;
 			foreach ($this->security->verifications as &$verification) {
@@ -62,6 +70,8 @@ Class PairReceived
 	            return true;
 	        }
 		}
-		return false;
+
+		//if the phrase or addedPair don't exists, send null
+		return null;
 	}
 }
