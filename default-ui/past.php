@@ -12,6 +12,7 @@
 	<script src="../scripts/PastLink.js"></script>
 	<script>
         var flpData = <?php echo json_encode($pairs);?>,
+            counts = <?php echo json_encode(FLP\PairAssembler::$counts) ?>,
             incompleteData = <?php echo $incompleteData ?>;
 
 		$(function() {
@@ -29,11 +30,12 @@
 
             var phrases = $('span.phrases');
 
-            for(var i = 0; i <= <?php echo $ui->phraseIndex;?>; i++) {
+            for(var i = 0; i <= flpData.length; i++) {
                 new FutureLink(
                     phrases.filter('span.phraseBeginning' + i),
                     phrases.filter('span.phrase' + i),
-                    phrases.filter('span.phraseEnd' + i)
+                    phrases.filter('span.phraseEnd' + i),
+                    counts[flpData[i].pastText.sanitized]
                 );
             }
 		});

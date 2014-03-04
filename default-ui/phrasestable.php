@@ -1,8 +1,9 @@
 <?php
 
-function drawTable(FLP\UI $ui)
+function drawTable()
 {
-	$table =
+    $phraser = new Phraser\Parser();
+    $table =
 		'<table>' .
 			drawHeader() .
 			'<tbody>';
@@ -18,7 +19,8 @@ function drawTable(FLP\UI $ui)
 	}
 
 	foreach($pairsGrouped as $pair) {
-		$table .= drawRow($pair->past);
+        $sanitized = $phraser->superSanitize($pair->past->text);
+		$table .= drawRow($pair->past, FLP\PairAssembler::$counts[$sanitized]);
 	}
 
 	$table .=
@@ -33,18 +35,20 @@ function drawHeader()
 	return '<tr>' .
 		'<th>Text</th>' .
 		'<th>Site</th>' .
+        '<th>Links</th>' .
 	'</tr>';
 }
 
-function drawRow(FLP\Metadata $metadata)
+function drawRow(FLP\Metadata $metadata, $length)
 {
 	return '<tr>' .
 		'<td>' . strip_tags($metadata->text) . '</td>' .
 		'<td>' . strip_tags($metadata->href) . '</td>' .
+		'<td>' . $length . '</td>' .
 	'</tr>';
 }
 
-drawTable($ui);
+echo drawTable();
 ?>
 <script>
 	$('th').click(function(){

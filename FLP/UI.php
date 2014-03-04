@@ -27,8 +27,11 @@ class UI
      */
     public function addPhrase(Phraser\Phrase $text)
     {
-        $this->parser->addIndexes($this->body->words, $text->words);
-        $this->phraseIndex++;
+        $added = $this->parser->addIndexes($this->body->words, $text->words);
+
+        if ($added) {
+            $this->phraseIndex++;
+        }
     }
 
     /**
