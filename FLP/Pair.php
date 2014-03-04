@@ -40,4 +40,9 @@ class Pair extends Feeder
     {
         return $this->pastRaw . $this->futureRaw;
     }
+
+	public function revision()
+	{
+		return Data::getRevision($this->past->text);
+	}
 }

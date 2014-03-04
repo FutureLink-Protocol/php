@@ -41,7 +41,7 @@ Class PairReceived
      */
     function addItem(Pair $pair)
 	{
-		$revision = $this->revision = Data::getRevision($pair);
+		$revision = $this->revision = $pair->revision();
 		$alreadyAddedPair = Data::getPair($pair);
 
 		//don't let it be added if it already exists

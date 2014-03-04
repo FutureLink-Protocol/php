@@ -48,9 +48,9 @@ class Data
 		R::store($article);
 	}
 
-	public static function getRevision(Pair $pair)
+	public static function getRevision($text)
 	{
-		$phrase = new Phraser\Phrase($pair->past->text);
+		$phrase = new Phraser\Phrase($text);
 
 		if (!self::$initiated) self::setup();
 
