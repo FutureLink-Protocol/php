@@ -76,6 +76,8 @@ SQL
 		return null;
 	}
 
+
+	//pair
 	public static function GetPairsByTitleAndApplyToUI($title, UI $ui)
 	{
 		if (!self::$initiated) self::setup();
@@ -115,5 +117,38 @@ SQL
 		$flpPair->sanitized = $phrase->sanitized;
 		$flpPair->pair = $pairAsJson;
 		R::store($flpPair);
+	}
+
+	public static function createKeywords($title)
+	{
+		//TODO
+	}
+
+	public static function getKeywords($title)
+	{
+		//TODO
+		return array();
+	}
+
+	public static function createScientificField($title)
+	{
+		//TODO
+	}
+
+	public static function getScientificField($title)
+	{
+		//TODO
+		return array();
+	}
+
+	public static function createMinimumStatisticsNeeded($title)
+	{
+		//TODO
+	}
+
+	public static function getMinimumStatisticsNeeded($title)
+	{
+		//TODO
+		return array();
 	}
 }
