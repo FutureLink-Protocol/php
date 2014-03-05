@@ -8,14 +8,26 @@ class Data
 {
 	private static $initiated = false;
 
-	public static $dbConnectionString = NULL;
-	public static $dbUsername = NULL;
-	public static $dbPassword = NULL;
+	//public static $dbConnectionString;
+	//public static $dbUsername;
+	//public static $dbPassword;
 
 	public static function setup()
 	{
+
+        global $db_tiki, $host_tiki, $user_tiki, $pass_tiki, $dbs_tiki;
+        if ($db_tiki=='mysqli') {
+            $dbConnectionString = 'mysql:host=' . $host_tiki . ';dbname=' . $dbs_tiki;
+            $dbUsername = $user_tiki;
+            $dbPassword = $pass_tiki;
+        } else {
+            $dbConnectionString = null;
+            $dbUsername = null;
+            $dbPassword = null;
+        }
+
 		R::setStrictTyping(false);
-		R::setup(self::$dbConnectionString, self::$dbUsername, self::$dbPassword);
+		R::setup($dbConnectionString, $dbUsername, $dbPassword);
 		self::$initiated = true;
 	}
 
@@ -82,7 +94,7 @@ SQL
 	{
 		if (!self::$initiated) self::setup();
 
-		$pairsRaw = R::findAll('flpPair',' title = ? ', array($title));
+        $pairsRaw = R::findAll('flpPair',' title = ? ', array($title));
 
 		$pairs = array();
 
