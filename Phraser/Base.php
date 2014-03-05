@@ -153,7 +153,7 @@ abstract class Base
 
 		//We may not have a match
 		if (count($boundaries) == 1 && strlen($boundaries[0]) == strlen($parentConcat)) {
-			return array();
+			return false;
 		}
 
 		for ($i = 0, $j = count($boundaries); $i < $j; $i++) {
@@ -168,6 +168,8 @@ abstract class Base
 
 			$i++;
 		}
+
+        return true;
 	}
 
 	static function hasPhrase($parent, $phrase)

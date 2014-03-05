@@ -8,7 +8,7 @@ class PairAssembler
     public $pair;
     public $pastText;
     public $futureText;
-    public static $count = array();
+    public static $counts = array();
 
     public function __construct($raw)
     {
@@ -19,10 +19,10 @@ class PairAssembler
         $this->pastText = new Phraser\Phrase($this->pair->past->text);
         $this->futureText = new Phraser\Phrase($this->pair->future->text);
 
-        if (!isset(self::$count[$this->pair->past->text])) {
-            self::$count[$this->pair->past->text] = 1;
+        if (!isset(self::$counts[$this->pastText->sanitized])) {
+            self::$counts[$this->pastText->sanitized] = 1;
         } else {
-            self::$count[$this->pair->past->text]++;
+            self::$counts[$this->pastText->sanitized]++;
         }
     }
 }
