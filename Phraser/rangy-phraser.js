@@ -1,6 +1,4 @@
-rangy.createModule("Phraser", function(api, module) {
-
-    api.requireModules( ["WrappedSelection", "WrappedRange"] );
+rangy.createModule("Phraser", ["WrappedSelection", "WrappedRange"], function(api, module) {
 
     function getParts(val, id) {
     	var words = [];
