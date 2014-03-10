@@ -3,8 +3,46 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5c3870f4239c0ecd83b331e13eaaa742",
+    "hash": "114056c433e6540e43ef3d6e7acaea61",
     "packages": [
+        {
+            "name": "bafs/testify",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marco-fiset/Testify.php.git",
+                "reference": "6ae9dca4f465a2994b66b5e57e2c2116ebc42420"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marco-fiset/Testify.php/zipball/6ae9dca4f465a2994b66b5e57e2c2116ebc42420",
+                "reference": "6ae9dca4f465a2994b66b5e57e2c2116ebc42420",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Testify": "lib/"
+                }
+            },
+            "license": [
+                "GPL"
+            ],
+            "description": "Testify makes writing unit tests fun again. It has an elegant syntax and keeps things simple",
+            "keywords": [
+                "framework",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "source": "https://github.com/marco-fiset/Testify.php/tree/master",
+                "issues": "https://github.com/marco-fiset/Testify.php/issues"
+            },
+            "time": "2013-09-08 19:54:12"
+        },
         {
             "name": "gabordemooij/redbean",
             "version": "v3.5.1",
@@ -100,9 +138,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "bafs/testify": 20
+    },
     "platform": {
         "php": ">=5.4.0"
     },
