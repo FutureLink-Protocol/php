@@ -8,8 +8,7 @@ FLP\Events::bind(new FLP\Event\Send(function($url, $params, &$result, &$item, &$
 		foreach($params as $key => $param) {
 			$_POST[$key] = $param;
 		}
-
-		require_once 'receiver.php';
+		FLP\Service\Receiver::receive();
 		$result = ob_get_clean();
 		print_r($result);
 	} else {

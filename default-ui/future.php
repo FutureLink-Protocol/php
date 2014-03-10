@@ -12,15 +12,21 @@ $ui->addPhrase(new Phraser\Phrase($text));
 
 echo $ui->render();?>
 </body>
-<script src="../jquery-1.10.2.min.js"></script>
-<script src="../scripts/FutureLink.js"></script>
+<script src="../vendor/jquery/jquery/jquery-1.10.2.js"></script>
+<script src="../scripts/flp.js"></script>
+<script src="../scripts/flp.Link.js"></script>
 <script>
-    var phrases = $('span.phrases');
+	var flpData = <?php echo json_encode(array($assembled));?>,
+        phrases = $('span.phrases');
 
-    new FutureLink(
-        phrases.filter('span.phraseBeginning0'),
-        phrases.filter('span.phrase0'),
-        phrases.filter('span.phraseEnd0')
-    );
+	(new flp.Link({
+        beginning: phrases.filter('span.phraseBeginning0'),
+        middle: phrases.filter('span.phrase0'),
+        end: phrases.filter('span.phraseEnd0'),
+	    to: 'past',
+	    pairs: flpData
+    })).show = function(el) {
+		$('body').append(el);
+	};
 </script>
 </html>

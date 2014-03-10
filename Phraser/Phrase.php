@@ -10,7 +10,7 @@ class Phrase
     public function __construct($text)
     {
         $this->original = $text;
-	    $this->words = Parser::sanitizeToWords($text);
+	    $this->words = Phraser::sanitizeToWords($text);
         $this->sanitized = implode('', $this->words);
     }
 }

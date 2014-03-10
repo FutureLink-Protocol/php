@@ -52,5 +52,10 @@ if (!($foundArticle = FLP\Data::getArticleByTitle($title))) {
 	$msg = 'Article Created';
 }
 
-FLP\Pairs::add(new FLP\Pair($clipboarddata, $metadata));
+$pair = new FLP\Pair($clipboarddata, $metadata);
+$assembled = new FLP\PairAssembler();
+$assembled->futureText = new Phraser\Phrase($metadata->text);
+$assembled->pastText = new Phraser\Phrase($clipboarddata->text);
+$assembled->pair = $pair;
+FLP\Pairs::add($pair);
 require_once("sender.php");

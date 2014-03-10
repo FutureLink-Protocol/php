@@ -18,7 +18,7 @@ class UI
      */
     public function __construct($body)
 	{
-		$this->parser = new Phraser\Parser();
+		$this->parser = new Phraser\Phraser();
 		$this->body = new Phraser\Phrase($body);
 	}
 

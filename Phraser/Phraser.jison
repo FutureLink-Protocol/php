@@ -1,7 +1,7 @@
 /* description: Parses words out of html, ignoring html in the parse, but returning it in the end */
 //option namespace:Phraser
-//option class:Parser
-//option fileName:Parser.php
+//option class:Phraser
+//option fileName:Phraser.php
 //option extends:Base
 
 /* lexical grammar */

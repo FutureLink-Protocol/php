@@ -42,7 +42,7 @@ class Data
 		$article = R::dispense('flpArticle');
 		$article->title = $title;
 		$article->body = $body;
-		$article->sanitized = Phraser\Parser::superSanitize($body);
+		$article->sanitized = Phraser\Phraser::superSanitize($body);
 		$article->metadata = json_encode($metadata);
 		$article->version = $version;
 		R::store($article);
@@ -50,7 +50,7 @@ class Data
 
 	public static function getRevision($text)
 	{
-		$phrase = new Phraser\Phrase($text);
+		$phrase = new Phraser\Phraser($text);
 
 		if (!self::$initiated) self::setup();
 

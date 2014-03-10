@@ -6,7 +6,7 @@ use Exception;
 
 
 
-class Parser extends Base
+class Phraser extends Base
 {
     public $symbols = array();
     public $terminals = array();

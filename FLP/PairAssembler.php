@@ -10,19 +10,22 @@ class PairAssembler
     public $futureText;
     public static $counts = array();
 
-    public function __construct($raw)
+    public function __construct($raw = '')
     {
-        $json = json_decode($raw);
+	    if ($raw != '')
+	    {
+	        $json = json_decode($raw);
 
-        $this->pair = new Pair($json->past, $json->future);
+	        $this->pair = new Pair($json->past, $json->future);
 
-        $this->pastText = new Phraser\Phrase($this->pair->past->text);
-        $this->futureText = new Phraser\Phrase($this->pair->future->text);
+	        $this->pastText = new Phraser\Phrase($this->pair->past->text);
+	        $this->futureText = new Phraser\Phrase($this->pair->future->text);
 
-        if (!isset(self::$counts[$this->pastText->sanitized])) {
-            self::$counts[$this->pastText->sanitized] = 1;
-        } else {
-            self::$counts[$this->pastText->sanitized]++;
-        }
+	        if (!isset(self::$counts[$this->pastText->sanitized])) {
+	            self::$counts[$this->pastText->sanitized] = 1;
+	        } else {
+	            self::$counts[$this->pastText->sanitized]++;
+	        }
+	    }
     }
 }

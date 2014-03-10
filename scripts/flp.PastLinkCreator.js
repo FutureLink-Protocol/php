@@ -1,4 +1,4 @@
-var PastLink = (function(document, window, rangy) {
+flp.PastLinkCreator = (function(document, window, rangy) {
     var Construct = function(incompleteData) {
         incompleteData = incompleteData || {
             author: '',
