@@ -210,6 +210,7 @@ class Phraser extends Base
     function parserPerformAction(&$thisS, &$yy, $yystate, &$s, $o)
     {
         
+/* this == yyval */
 
 
 switch ($yystate) {
@@ -637,7 +638,7 @@ break;
     {
         
 
-
+;
 switch($avoidingNameCollisions) {
 case 0:return 7;
 break;
