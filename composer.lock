@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "114056c433e6540e43ef3d6e7acaea61",
+    "hash": "ce0d14dffb2fd6ed3f3616a5b7f42c77",
     "packages": [
         {
             "name": "gabordemooij/redbean",
@@ -131,6 +131,37 @@
                 "issues": "https://github.com/marco-fiset/Testify.php/issues"
             },
             "time": "2013-09-08 19:54:12"
+        },
+        {
+            "name": "tablesorter/tablesorter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mottie/tablesorter.git",
+                "reference": "261b009af12bea8d7e873636659b11b98556a066"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/Mottie/tablesorter/archive/master.zip",
+                "reference": "261b009af12bea8d7e873636659b11b98556a066",
+                "shasum": ""
+            },
+            "type": "library",
+            "license": [
+                "GPL",
+                "MIT"
+            ],
+            "description": "tablesorter is a jQuery plugin for turning a standard HTML table with THEAD and TBODY tags into a sortable table without page refreshes. tablesorter can successfully parse and sort many types of data including linked data in a cell.",
+            "keywords": [
+                "javascript",
+                "sort",
+                "table"
+            ],
+            "support": {
+                "source": "https://github.com/Mottie/tablesorter/tree/master",
+                "issues": "https://github.com/Mottie/tablesorter/issues"
+            },
+            "time": "2014-03-10 02:23:08"
         }
     ],
     "aliases": [
@@ -138,7 +169,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bafs/testify": 20
+        "bafs/testify": 20,
+        "tablesorter/tablesorter": 20
     },
     "platform": {
         "php": ">=5.4.0"

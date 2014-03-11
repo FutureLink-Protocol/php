@@ -25,7 +25,8 @@
 	     "md5/md5": ">=1.1.0"
      },
     "require-dev": {
-        "bafs/testify": "dev-master"
+        "bafs/testify": "dev-master",
+        "tablesorter/tablesorter": "dev-master"
     },
 	"repositories": [
 		{

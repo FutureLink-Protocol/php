@@ -54,14 +54,16 @@ flp.Link = (function() {
                     link = document.createElement('a'),
                     col1 = document.createElement('td'),
                     col2 = document.createElement('td'),
-                    col3 = document.createElement('td');
+                    col3 = document.createElement('td'),
+                    tbody = document.createElement('tbody');
 
                 link.setAttribute('href', site);
                 head1.textContent = _this.translate('Author');
                 head2.textContent = _this.translate('Profession');
                 head3.textContent = _this.translate('Source');
                 tab.appendChild(thead);
-                tab.appendChild(row2);
+                tab.appendChild(tbody);
+                tbody.appendChild(row2);
                 thead.appendChild(row1);
                 row1.appendChild(head1);
                 row1.appendChild(head2);

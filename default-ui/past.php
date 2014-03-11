@@ -11,7 +11,9 @@
 	<script src="../scripts/flp.js"></script>
 	<script src="../scripts/flp.Link.js"></script>
 	<script src="../scripts/flp.PastLinkCreator.js"></script>
+    <script type="text/javascript" src="../tablesorter/js/jquery.tablesorter.js"></script>
     <link rel="stylesheet" href="../vendor/jquery/jquery-ui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="../tablesorter/css/theme.dropbox.css">
 	<script>
         var flpData = <?php echo json_encode($pairs);?>,
             counts = <?php echo json_encode(FLP\PairAssembler::$counts) ?>,
@@ -33,8 +35,10 @@
             var phrases = $('span.phrases'),
                 phrasesLookupTable = {},
                 show = function(table) {
-                    $('body')
-                        .append(table);
+                    $(table)
+                        .appendTo('body')
+                        .addClass('tablesorter tablesorter-dropbox')
+                        .tablesorter();
                 };
 
             for(var x = 0; x < flpData.length; x++){

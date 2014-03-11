@@ -15,6 +15,8 @@ echo $ui->render();?>
 <script src="../vendor/jquery/jquery/jquery-1.10.2.js"></script>
 <script src="../scripts/flp.js"></script>
 <script src="../scripts/flp.Link.js"></script>
+<script type="text/javascript" src="../tablesorter/js/jquery.tablesorter.js"></script>
+<link rel="stylesheet" href="../tablesorter/css/theme.dropbox.css">
 <link rel="stylesheet" href="../vendor/jquery/jquery-ui/themes/base/jquery-ui.css" />
 <script>
 	var flpData = <?php echo json_encode(array($assembled));?>,
@@ -27,7 +29,10 @@ echo $ui->render();?>
 	    to: 'past',
 	    pairs: flpData
     })).show = function(el) {
-		$('body').append(el);
+        $(el)
+            .appendTo('body')
+            .addClass('tablesorter tablesorter-dropbox')
+            .tablesorter();
 	};
 </script>
 </html>
