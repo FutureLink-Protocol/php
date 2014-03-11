@@ -15,6 +15,7 @@ echo $ui->render();?>
 <script src="../vendor/jquery/jquery/jquery-1.10.2.js"></script>
 <script src="../scripts/flp.js"></script>
 <script src="../scripts/flp.Link.js"></script>
+<link rel="stylesheet" href="../vendor/jquery/jquery-ui/themes/base/jquery-ui.css" />
 <script>
 	var flpData = <?php echo json_encode(array($assembled));?>,
         phrases = $('span.phrases');
