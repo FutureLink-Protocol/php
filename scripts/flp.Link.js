@@ -80,25 +80,44 @@ flp.Link = (function() {
             _this.show(tab);
         };
 
-	    switch(settings.count) {
-            case 1:
-                icon.innerHTML = '&#9676;';
-                break;
-            case 2:
-                icon.innerHTML = '&#9675;';
-                break;
-            case 3:
-                icon.innerHTML = '&#9678;';
-                break;
-            case 4:
-                icon.innerHTML = '&#9673;';
-                break;
-            default:
-                icon.innerHTML = '&#9679;';
-                break;
+        if(settings.to == 'past'){
+            switch(settings.count) {
+                case 1:
+                    icon.innerHTML = '&#9676;';
+                    break;
+                case 2:
+                    icon.innerHTML = '&#9675;';
+                    break;
+                case 3:
+                    icon.innerHTML = '&#9678;';
+                    break;
+                case 4:
+                    icon.innerHTML = '&#9673;';
+                    break;
+                default:
+                    icon.innerHTML = '&#9679;';
+                    break;
+            }
         }
-
-
+        else{
+            switch(settings.count) {
+                case 1:
+                    icon.innerHTML = '&#11034;';
+                    break;
+                case 2:
+                    icon.innerHTML = '&#11036;';
+                    break;
+                case 3:
+                    icon.innerHTML = '&#10696;';
+                    break;
+                case 4:
+                    icon.innerHTML = '&#9635;';
+                    break;
+                default:
+                    icon.innerHTML = '&#11035;';
+                    break;
+            }
+        }
         phrase
 	        .addClass('ui-state-highlight')
 	        .css('border-width', '0px');
