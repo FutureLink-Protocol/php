@@ -43,7 +43,7 @@ flp.Link = (function() {
             tab.setAttribute('border', '1px');
             for(var i = 0; i < pairs.length; i++){
                 var auth = pairs[i].pair[to].author,
-                    prof = pairs[i].pair[to].authorProfession,
+                    text = pairs[i].pair[to].text,
                     site = pairs[i].pair[to].href,
                     row1 = document.createElement('tr'),
                     row2 = document.createElement('tr'),
@@ -59,7 +59,7 @@ flp.Link = (function() {
 
                 link.setAttribute('href', site);
                 head1.textContent = _this.translate('Author');
-                head2.textContent = _this.translate('Profession');
+                head2.textContent = _this.translate('Text');
                 head3.textContent = _this.translate('Source');
                 tab.appendChild(thead);
                 tab.appendChild(tbody);
@@ -72,7 +72,7 @@ flp.Link = (function() {
                 row2.appendChild(col2);
                 row2.appendChild(col3);
                 col1.textContent = auth;
-                col2.textContent = prof;
+                col2.textContent = text;
                 col3.appendChild(link);
                 link.textContent = site;
             }
