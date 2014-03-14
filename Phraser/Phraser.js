@@ -575,22 +575,18 @@ performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:/* skip */
+case 0:return 7
 break;
-case 1:/* skip */
+case 1:return 8
 break;
-case 2:return 7
+case 2:return 9
 break;
-case 3:return 8
-break;
-case 4:return 9
-break;
-case 5:return 5
+case 3:return 5
 break;
 }
 },
-rules: [/^(?:[@]FLP([(].+?[)]))/,/^(?:[@][)])/,/^(?:<(.|\n)*?>+)/,/^(?:(\w|\d)+)/,/^(?:(.|\n|\s))/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5],"inclusive":true}}
+rules: [/^(?:<(.|\n)*?>+)/,/^(?:(\w|\d)+)/,/^(?:(.|\n|\s))/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3],"inclusive":true}}
 };
 return lexer;
 })();

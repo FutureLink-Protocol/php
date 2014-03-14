@@ -193,17 +193,15 @@ class Phraser extends Base
         
 			$this->rules = array(
 				
-					0=>"/^(?:[@]FLP([(].+?[)]))/",
-					1=>"/^(?:[@][)])/",
-					2=>"/^(?:<(.|\n)*?>+)/",
-					3=>"/^(?:(\w|\d)+)/",
-					4=>"/^(?:(.|\n|\s))/",
-					5=>"/^(?:$)/"
+					0=>"/^(?:<(.|\n)*?>+)/",
+					1=>"/^(?:(\w|\d)+)/",
+					2=>"/^(?:(.|\n|\s))/",
+					3=>"/^(?:$)/"
 				);
 
 			$this->conditions = array(
 				
-					"INITIAL"=>new LexerConditions(array( 0,1,2,3,4,5), true)
+					"INITIAL"=>new LexerConditions(array( 0,1,2,3), true)
 				);
 
 
@@ -642,17 +640,13 @@ break;
 
 ;
 switch($avoidingNameCollisions) {
-case 0:/* skip */
+case 0:return 7;
 break;
-case 1:/* skip */
+case 1:return 8;
 break;
-case 2:return 7;
+case 2:return 9;
 break;
-case 3:return 8;
-break;
-case 4:return 9;
-break;
-case 5:return 5;
+case 3:return 5;
 break;
 }
 
