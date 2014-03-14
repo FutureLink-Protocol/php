@@ -61,7 +61,7 @@ SQL
 			array( '%' . $phrase->sanitized . '%')
 		);
 
-		if ($found) {
+		if (!empty($found)) {
 			$revision = new Revision(
 				$found->title,
 				$found->version,
