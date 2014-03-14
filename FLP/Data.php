@@ -97,7 +97,7 @@ SQL
 	{
 		if (!self::$initiated) self::setup();
 
-		$phrase = new Phraser\Phrase($pair->past->text);
+		$phrase = Phraser\Phraser::superSanitize($pair->past->text);
 
 		return R::findOne('flpPair',' sanitized = ? ', array($phrase->sanitized));
 	}
@@ -108,11 +108,11 @@ SQL
 
 		//prep to go into database
 		$pairAsJson = json_encode($pair);
-		$phrase = new Phraser\Phrase($pair->past->text);
+		$phrase = Phraser\Phraser::superSanitize($pair->past->text);
 
 		$flpPair = R::dispense('flpPair');
 		$flpPair->title = $title;
-		$flpPair->sanitized = $phrase->sanitized;
+		$flpPair->sanitized = $phrase;
 		$flpPair->pair = $pairAsJson;
 		R::store($flpPair);
 	}
