@@ -19,12 +19,16 @@ var flp = {
         var links, link;
         if ((links = this.pastLinks[sanitized]) && (link = links[0])) {
             link.selectAndScrollTo();
+            return true;
         }
+        return false;
     },
     selectAndScrollToFutureLink: function(sanitized) {
         var links, link;
         if ((links = this.pastLinks[sanitized]) && (link = links[0])) {
             link.selectAndScrollTo();
+            return true;
         }
+        return false;
     }
 };
