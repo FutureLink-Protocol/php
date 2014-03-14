@@ -99,7 +99,7 @@ SQL
 
 		$phrase = Phraser\Phraser::superSanitize($pair->past->text);
 
-		return R::findOne('flpPair',' sanitized = ? ', array($phrase->sanitized));
+		return R::findOne('flpPair',' sanitized = ? ', array($phrase));
 	}
 
 	public static function createPair($title, Pair $pair)
