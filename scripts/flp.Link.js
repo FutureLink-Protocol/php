@@ -63,10 +63,10 @@ flp.Link = (function(document, rangy) {
                     tbody = document.createElement('tbody');
 
                 if(site.indexOf('?') === -1){
-                    link.setAttribute('href', site + '?' + encodedText);
+                    link.setAttribute('href', site + '?phrase=' + encodedText);
                 }
                 else{
-                    link.setAttribute('href', site + '&' + encodedText);
+                    link.setAttribute('href', site + '&phrase=' + encodedText);
                 }
 
                 head1.textContent = _this.translate('Author');
