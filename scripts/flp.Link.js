@@ -1,4 +1,4 @@
-flp.Link = (function() {
+flp.Link = (function(document, rangy) {
     var Construct = function(settings) {
 	    var _this = this,
 		    ds = this.settingDefaults,
@@ -12,8 +12,9 @@ flp.Link = (function() {
 		    to;
 
 	    for(i in ds) {
+            //if beginning, middle, or end are null
 		    if ((settings[i] = settings[i] || ds[i]) === null) {
-			    return;
+			    throw new Error("setting 'beginning', 'middle', and 'end' must be defined");
 		    }
 	    }
 
@@ -137,6 +138,12 @@ flp.Link = (function() {
     Construct.prototype = {
         show: function (table) {},
 	    translate: function(text) {return text;},
+        selectAndScrollTo: function() {
+            var selection = rangy.setPhraseBetweenNodes(this.settings.beginning, this.settings.end, document);
+            $('body,html').animate({
+                scrollTop: selection.first().offset().top - 10
+            });
+        },
 	    settingDefaults: {
 		    beginning: null,
 		    middle: null,
@@ -148,4 +155,4 @@ flp.Link = (function() {
     };
 
     return Construct;
-})();
+})(document, rangy);
