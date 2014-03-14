@@ -6,14 +6,13 @@
 	<script src="../vendor/jquery/jquery/jquery-1.10.2.js"></script>
 	<script src="../vendor/md5/md5/js/md5.js"></script>
 	<script src="../vendor/rangy/rangy/rangy-core.js"></script>
-	<script src="../vendor/rangy/rangy/rangy-textrange.js"></script>
 	<script src="../Phraser/rangy-phraser.js"></script>
 	<script src="../scripts/flp.js"></script>
 	<script src="../scripts/flp.Link.js"></script>
 	<script src="../scripts/flp.PastLinkCreator.js"></script>
-    <script type="text/javascript" src="../tablesorter/js/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="../vendor/tablesorter/tablesorter/js/jquery.tablesorter.js"></script>
     <link rel="stylesheet" href="../vendor/jquery/jquery-ui/themes/base/jquery-ui.css" />
-    <link rel="stylesheet" href="../tablesorter/css/theme.dropbox.css">
+    <link rel="stylesheet" href="../vendor/tablesorter/tablesorter/css/theme.dropbox.css">
 	<script>
         var flpData = <?php echo json_encode($pairs);?>,
             counts = <?php echo json_encode(FLP\PairAssembler::$counts) ?>,
@@ -59,6 +58,11 @@
                 });
 
                 futureLink.show = show;
+
+                flp.addFutureLink(futureLink);
+                setTimeout(function() {
+                    flp.selectAndScrollToFutureLink(futureLink.settings.pairs[0].pastText.sanitized);
+                }, 50);
             }
 
 

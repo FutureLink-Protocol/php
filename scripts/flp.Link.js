@@ -1,4 +1,4 @@
-flp.Link = (function(document, rangy) {
+flp.Link = (function(document) {
     var Construct = function(settings) {
 	    var _this = this,
 		    ds = this.settingDefaults,
@@ -141,7 +141,7 @@ flp.Link = (function(document, rangy) {
         selectAndScrollTo: function() {
             var selection = rangy.setPhraseBetweenNodes(this.settings.beginning, this.settings.end, document);
             $('body,html').animate({
-                scrollTop: selection.first().offset().top - 10
+                scrollTop: this.settings.beginning.offset().top - 10
             });
         },
 	    settingDefaults: {
@@ -155,4 +155,4 @@ flp.Link = (function(document, rangy) {
     };
 
     return Construct;
-})(document, rangy);
+})(document);
