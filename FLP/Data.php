@@ -50,7 +50,7 @@ class Data
 
 	public static function getRevision($text)
 	{
-		$phrase = new Phraser\Phraser($text);
+		$phrase = Phraser\Phraser::superSanitize($text);
 
 		if (!self::$initiated) self::setup();
 
@@ -58,17 +58,16 @@ class Data
 SELECT * FROM flpArticle WHERE sanitized LIKE ? ORDER BY version DESC LIMIT 1
 SQL
 			,
-			array( '%' . $phrase->sanitized . '%')
+			array( '%' . $phrase . '%')
 		);
 
 		if ($found) {
-            $bean = R::convertToBeans('flpArticle', $found);
+            //found is an array, not a bean
 			$revision = new Revision(
-                $bean->title,
-                $bean->version,
-                $bean->data,
-                $bean->date,
-                $bean->phrase
+                $found['title'],
+                $found['version'],
+                $found['body'],
+                $found['sanitized']
 			);
 			return $revision;
 		}
