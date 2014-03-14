@@ -237,7 +237,7 @@ rangy.createModule("Phraser", ["WrappedSelection", "WrappedRange"], function(api
 		},
 		sanitizeToWords: function (html) {
 			var sanitized = html.replace(/<(.|\n)*?>/g, ' ');
-			sanitized = sanitized.replace(/[@]FLP([(].+[)])/g, ' ');
+			sanitized = sanitized.replace(/[@]FLP([(].+?[)])/g, ' ');
             sanitized = sanitized.replace(/[@][)]/g, ' ');
 			sanitized = sanitized.replace(/\W/g, ' ');
 			sanitized = sanitized.split(' ');

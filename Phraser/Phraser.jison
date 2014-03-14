@@ -7,7 +7,7 @@
 /* lexical grammar */
 %lex
 %%
-[@]FLP([(].+[)])                    {/* skip */}
+[@]FLP([(].+?[)])                   {/* skip */}
 [@][)]                              {/* skip */}
 "<"(.|\n)*?">"+ 					return 'TAG'
 (\w|\d)+							return 'WORD'

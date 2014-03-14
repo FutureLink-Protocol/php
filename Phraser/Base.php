@@ -191,7 +191,7 @@ abstract class Base
 		if (isset(self::$sanitizedWords[$html])) return self::$sanitizedWords[$html];
 
 		$sanitized = preg_replace('/<(.|\n)*?>/', ' ', $html);
-		$sanitized = preg_replace('/[@]FLP([(].+[)])/', ' ', $sanitized);
+		$sanitized = preg_replace('/[@]FLP([(].+?[)])/', ' ', $sanitized);
 		$sanitized = preg_replace('/[@][)]/', ' ', $sanitized);
 		$sanitized = preg_replace('/\W/', ' ', $sanitized);
 		$sanitized = explode(" ", $sanitized);
