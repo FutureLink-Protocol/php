@@ -45,6 +45,10 @@ flp.Link = (function() {
                 var auth = pairs[i].pair[to].author,
                     text = pairs[i].pair[to].text,
                     site = pairs[i].pair[to].href,
+                    date = pairs[i].pair[to].dateLastUpdated,
+                    humanDate = new Date(date * 1000),
+                    humanDateStr = humanDate.toGMTString(),
+                    encodedText = encodeURIComponent(text),
                     row1 = document.createElement('tr'),
                     row2 = document.createElement('tr'),
                     thead = document.createElement('thead'),
@@ -57,10 +61,17 @@ flp.Link = (function() {
                     col3 = document.createElement('td'),
                     tbody = document.createElement('tbody');
 
-                link.setAttribute('href', site);
+                if(site.indexOf('?') === -1){
+                    link.setAttribute('href', site + '?' + encodedText);
+                }
+                else{
+                    link.setAttribute('href', site + '&' + encodedText);
+                }
+
                 head1.textContent = _this.translate('Author');
                 head2.textContent = _this.translate('Text');
-                head3.textContent = _this.translate('Source');
+                head3.textContent = _this.translate('Last Updated');
+
                 tab.appendChild(thead);
                 tab.appendChild(tbody);
                 tbody.appendChild(row2);
@@ -72,9 +83,9 @@ flp.Link = (function() {
                 row2.appendChild(col2);
                 row2.appendChild(col3);
                 col1.textContent = auth;
-                col2.textContent = text;
-                col3.appendChild(link);
-                link.textContent = site;
+                col2.appendChild(link);
+                col3.textContent = humanDateStr;
+                link.textContent = text;
             }
 
             _this.show(tab);
