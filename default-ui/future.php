@@ -7,7 +7,7 @@
 </head>
 <body><?php
 $ui = new FLP\UI($body);
-
+$ui->setContextAsFuture();
 $ui->addPhrase(new Phraser\Phrase($text));
 
 echo $ui->render();?>
@@ -23,9 +23,9 @@ echo $ui->render();?>
         phrases = $('span.phrases');
 
 	(new flp.Link({
-        beginning: phrases.filter('span.phraseBeginning0'),
-        middle: phrases.filter('span.phrase0'),
-        end: phrases.filter('span.phraseEnd0'),
+        beginning: phrases.filter('span.pastlink-beginning0'),
+        middle: phrases.filter('span.pastlink0'),
+        end: phrases.filter('span.pastlink-end0'),
 	    to: 'past',
 	    pairs: flpData
     })).show = function(el) {

@@ -12,6 +12,7 @@ class UI
 	public $parser;
 	public $body;
     public $phraseIndex = -1;
+    public $to;
 
     /**
      * @param $body
@@ -21,6 +22,22 @@ class UI
 		$this->parser = new Phraser\Phraser();
 		$this->body = new Phraser\Phrase($body);
 	}
+
+    public function setContextAsPast()
+    {
+        $this->to = 'future';
+        $this->parser->cssClassBeginning = 'futurelink-beginning';
+        $this->parser->cssClassMiddle = 'futurelink';
+        $this->parser->cssClassEnd = 'futurelink-end';
+    }
+
+    public function setContextAsFuture()
+    {
+        $this->to = 'past';
+        $this->parser->cssClassBeginning = 'pastlink-beginning';
+        $this->parser->cssClassMiddle = 'pastlink';
+        $this->parser->cssClassEnd = 'pastlink-end';
+    }
 
     /**
      * @param Phraser\Phrase $text
