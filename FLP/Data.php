@@ -54,10 +54,8 @@ class Data
 
 		if (!self::$initiated) self::setup();
 
-		$found = R::findOne(
-			'flpArticle',
-			<<<SQL
-sanitized LIKE ? ORDER BY version DESC
+		$found = R::getRow(<<<SQL
+SELECT * FROM flpArticle WHERE sanitized LIKE ? ORDER BY version DESC LIMIT 1
 SQL
 			,
 			array( '%' . $phrase->sanitized . '%')
