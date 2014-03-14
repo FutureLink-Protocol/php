@@ -9,9 +9,9 @@ $tf->test("Communication", function($tf) {
 });
 
 //Test Security
-$tf->test("Security", function($tf) {
+/*$tf->test("Security", function($tf) {
 	(new FLP\Test\Misc("Security"))->run($tf);
-});
+});*/
 
 ob_start();
 $tf();

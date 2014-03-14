@@ -51,9 +51,9 @@
 
             for(var i = 0; i < flpData.length; i++) {
                 var futureLink = new flp.Link({
-                    beginning: phrases.filter('span.phraseBeginning' + i),
-                    middle: phrases.filter('span.phrase' + i),
-                    end: phrases.filter('span.phraseEnd' + i),
+                    beginning: phrases.filter('span.futurelink-beginning' + i),
+                    middle: phrases.filter('span.futurelink' + i),
+                    end: phrases.filter('span.futurelink-end' + i),
                     count: counts[flpData[i].pastText.sanitized],
                     pairs: phrasesLookupTable[flpData[i].pastText.sanitized]
                 });

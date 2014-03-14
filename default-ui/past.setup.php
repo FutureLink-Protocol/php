@@ -47,4 +47,5 @@ if (!($foundArticle = FLP\Data::getArticleByTitle($title))) {
 }
 
 $ui = new FLP\UI($body);
+$ui->setContextAsPast();
 $pairs = FLP\Data::GetPairsByTitleAndApplyToUI($title, $ui);
