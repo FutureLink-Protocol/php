@@ -61,13 +61,14 @@ SQL
 			array( '%' . $phrase->sanitized . '%')
 		);
 
-		if (!empty($found)) {
+		if ($found) {
+            $bean = R::convertToBeans('flpArticle', $found);
 			$revision = new Revision(
-				$found->title,
-				$found->version,
-				$found->data,
-				$found->date,
-				$found->phrase
+                $bean->title,
+                $bean->version,
+                $bean->data,
+                $bean->date,
+                $bean->phrase
 			);
 			return $revision;
 		}
