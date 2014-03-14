@@ -10,6 +10,8 @@
 "<"(.|\n)*?">"+ 					return 'TAG'
 (\w|\d)+							return 'WORD'
 (.|\n|\s)							return 'CHAR'
+[@]FLP([(].+[)])                    {/* skip */}
+[@][)]                              {/* skip */}
 <<EOF>>								return 'EOF'
 
 

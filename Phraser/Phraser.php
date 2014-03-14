@@ -196,12 +196,14 @@ class Phraser extends Base
 					0=>"/^(?:<(.|\n)*?>+)/",
 					1=>"/^(?:(\w|\d)+)/",
 					2=>"/^(?:(.|\n|\s))/",
-					3=>"/^(?:$)/"
+					3=>"/^(?:[@]FLP([(].+[)]))/",
+					4=>"/^(?:[@][)])/",
+					5=>"/^(?:$)/"
 				);
 
 			$this->conditions = array(
 				
-					"INITIAL"=>new LexerConditions(array( 0,1,2,3), true)
+					"INITIAL"=>new LexerConditions(array( 0,1,2,3,4,5), true)
 				);
 
 
@@ -646,7 +648,11 @@ case 1:return 8;
 break;
 case 2:return 9;
 break;
-case 3:return 5;
+case 3:/* skip */
+break;
+case 4:/* skip */
+break;
+case 5:return 5;
 break;
 }
 
