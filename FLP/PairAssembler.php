@@ -21,11 +21,16 @@ class PairAssembler
 	        $this->pastText = new Phraser\Phrase($this->pair->past->text);
 	        $this->futureText = new Phraser\Phrase($this->pair->future->text);
 
-	        if (!isset(self::$counts[$this->pastText->sanitized])) {
-	            self::$counts[$this->pastText->sanitized] = 1;
-	        } else {
-	            self::$counts[$this->pastText->sanitized]++;
-	        }
+            $this->increment();
 	    }
+    }
+
+    public function increment()
+    {
+        if (!isset(self::$counts[$this->pastText->sanitized])) {
+            self::$counts[$this->pastText->sanitized] = 1;
+        } else {
+            self::$counts[$this->pastText->sanitized]++;
+        }
     }
 }
