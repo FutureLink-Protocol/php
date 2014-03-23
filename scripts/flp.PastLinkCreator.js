@@ -1,5 +1,7 @@
 flp.PastLinkCreator = (function(document, window, rangy) {
     var Construct = function(incompleteData) {
+        var selection = rangy.getSelection();
+
         incompleteData = incompleteData || {
             author: '',
             authorInstitution: '',
@@ -7,7 +9,7 @@ flp.PastLinkCreator = (function(document, window, rangy) {
         };
 
         incompleteData.href = document.location;
-        incompleteData.text = rangy.getSelection().text();
+        incompleteData.text = selection.toString();
         incompleteData.hash = md5(
             rangy.superSanitize(
                 incompleteData.author +
