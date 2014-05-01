@@ -17,7 +17,6 @@ class Events
 	private static $FeedLookup = array();
 	private static $FeedSave = array();
 	private static $Receive = array();
-	private static $Send = array();
 	private static $FilterPreviouslyVerified = array();
 
     /**
@@ -117,22 +116,6 @@ class Events
         }
     }
 
-    /**
-     * @param $url
-     * @param $params
-     * @param $result
-     * @param $data
-     * @param $items
-     */
-    public static function triggerSend($url, $params, &$result, &$data, &$items)
-    {
-        foreach(Events::$Send as &$event)
-        {
-            //$event->trigger($url, $params, $result, $data, $items);
-            $communicator = new Communicator($url, $params);
-            $result = $communicator->result;
-        }
-    }
 
     /**
      * @param Pair $pair

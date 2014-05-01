@@ -34,14 +34,18 @@ class SendToPast
 	                $feed = $pair->feed($_SERVER['REQUEST_URI']);
 	                $feed->feed->items[] = $pair;
 	                $feedJson = json_encode($feed);
-                    Events::triggerSend($pair->past->href, array(
+                    $communicator = new Communicator($pair->past->href, array(
                         'protocol'=> 'futurelink',
                         'metadata'=> $feedJson,
-	                    'continue'=> 'true'
-                    ), $result, $pair, Pairs::$pairs);
+                        'continue'=> 'true'
+                    ));
 
+                    $resultJson = null;
 
-                    $resultJson = json_decode($result);
+                    if (!empty($communicator->result)) {
+                        $result = $communicator->result;
+                        $resultJson = json_decode($result);
+                    }
 
 		            //Here we add the date last updated so that we don't have to send it if not needed, saving load time.
 		            if (!empty($resultJson->feed) && $resultJson->feed == "success") {
