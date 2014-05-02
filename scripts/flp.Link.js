@@ -31,10 +31,10 @@ flp.Link = (function(document) {
 	    to = settings.to.toLowerCase();
 	    switch (to) {
 		    case 'past':
-			    beginning.before(icon);
+			    beginning.after(icon);
 			    break;
 		    default:
-			    end.after(icon);
+			    end.before(icon);
 	    }
 
 	    pairs = settings.pairs
@@ -49,7 +49,9 @@ flp.Link = (function(document) {
                     date = pairs[i].pair[to].dateLastUpdated,
                     humanDate = new Date(date * 1000),
                     humanDateStr = humanDate.toGMTString(),
-                    encodedText = encodeURIComponent(text),
+                    encodedText = (encodeURIComponent(text) + '')
+                        .replace(/\(/g, '%28')
+                        .replace(/\)/g, '%29'),
                     row1 = document.createElement('tr'),
                     row2 = document.createElement('tr'),
                     thead = document.createElement('thead'),
