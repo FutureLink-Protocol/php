@@ -58,4 +58,4 @@ $assembled->futureText = new Phraser\Phrase($metadata->text);
 $assembled->pastText = new Phraser\Phrase($clipboarddata->text);
 $assembled->pair = $pair;
 FLP\Pairs::add($pair);
-require_once("sender.php");
+FLP\SendToPast::send();
